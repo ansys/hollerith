@@ -6,6 +6,7 @@
 *.pyc
 *.pyd
 *.so
+*_*.c
 *.o
 *.cache
 .pytest_cache/
