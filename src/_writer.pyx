@@ -13,14 +13,12 @@ import numpy as np  # Python-level symbols of numpy
 
 cimport numpy as np  # C-level symbols of numpy
 
-import pandas as pd
 from pandas._libs.missing import checknull
 
 # Numpy must be initialized from C or Cython to avoid segfaults
 np.import_array()
 
 import typing
-
 
 cdef extern from 'writer.h':
     int write_float_value(object write, object check_null, object value, int width)
@@ -46,11 +44,12 @@ cpdef write_int_to_buffer(buffer, value, width: int):
     throw_write_error(output)
 
 cpdef write_string_to_buffer(buffer, value, width: int):
-    """writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """writes a string representing the float `value` to `buffer` within the given `width`, left justified."""
     output: int = write_string_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-def write_null_to_buffer(buffer, width: int):
+cpdef write_null_to_buffer(buffer, width: int):
+    """writes `width` space characters to the buffer"""
     output: int = write_null_value(buffer.write, width)
     throw_write_error(output)
 
@@ -69,14 +68,12 @@ cdef int get_overall_width(fields: s_fields):
         width += fields.arr[i].field_width
     return width
 
-cdef s_fields convert_field_spec(spec):
+cdef s_fields convert_field_spec(spec: typing.List):
     """
-    spec looks like [("name", str, 0, 10), ...]
-    we discard the name.
-    client is responsible for freeing it.
+    This function allocates space for the s_fields.arr using `malloc`.
+    caller  is responsible for freeing it using `free`.
     """
     cdef s_fields fields
-    cdef int offset
     cdef int width
     cdef int i
     fields.size = len(spec)
@@ -85,11 +82,8 @@ cdef s_fields convert_field_spec(spec):
         raise MemoryError()
     for i in range(len(spec)):
         item = spec[i]
-        # name: str = item[0]
-        typ: type = item[1]
-        #offset = item[2]
-        width = item[3]
-        #value = item[4]
+        typ: type = item.type
+        width = item.width
         fields.arr[i].field_width = width
         if typ == int:
             fields.arr[i].field_type = 0
@@ -122,9 +116,10 @@ cdef write_row(write, spec: s_fields, np.ndarray[object, ndim=1] row_arr):
 
         throw_write_error(write_output)
 
-cpdef write_numpy_table(buffer, spec, numrows: int, np.ndarray[object, ndim=2] arr):
+cpdef write_numpy_table(buffer, spec: typing.List, numrows: int, np.ndarray[object, ndim=2] arr):
     """
     buffer: buffer to write to - it could be a file or a StringIO object
+    spec: specification of the table column types and widths
     numrows: int
         the number of rows to write. This might be larger than the size of the numpy
         array suggests, if so, append with empty lines with the right size.
@@ -132,9 +127,7 @@ cpdef write_numpy_table(buffer, spec, numrows: int, np.ndarray[object, ndim=2] a
 
     assume by now that all empty columns are already added to the spec
     """
-    # when dealing with this numpy array - assume that all the values in each column are
-    # already normalized to the correct type. dynalib tables already do that.
-    # assume by now that all empty columns are already in the spec
+    # when dealing with this numpy array - assume that all the values are object
     write: typing.Callable = buffer.write
     cdef int num_arr_rows = arr.shape[0]
     cdef int num_arr_cols = arr.shape[1]
@@ -156,9 +149,3 @@ cpdef write_numpy_table(buffer, spec, numrows: int, np.ndarray[object, ndim=2] a
                 write_row(write, fields, arr[index])
     finally:
         free(fields.arr)
-
-def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[typing.Tuple]):
-    # write_numpy_table expects a numpy array of object.  narrower tables are possible in dynalib,
-    # but to avoid having to specialize write_numpy_table, we convert to object here.
-    numpy_table = table.to_numpy().astype(object)
-    write_numpy_table(buffer, spec, numrows, numpy_table)
