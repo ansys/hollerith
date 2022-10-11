@@ -16,20 +16,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
-      - name: Install pre-commit requirements
+      - name: Install pre-commit
         run: |
-          pip install poetry
-          poetry install -E pre-commit
+          sudo apt-get -y update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git-all
+          pip install pre-commit
+          git config --global --add safe.directory /__w/dynalib/dynalib
 
+      - uses: actions/checkout@v3
       - name: Run pre-commit
-        run: |
-          poetry run pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+        run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   main:
     name: Build and Testing
