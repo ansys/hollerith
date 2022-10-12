@@ -80,10 +80,11 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install library, with docs extra
+      - name: Install library
         run: |
-          pip install poetry
-          poetry install -E docs
+          sudo apt-get -y update
+          sudo apt-get -y install python3-pip
+          pip install -e .
 
       - name: Build HTML
         run: |
