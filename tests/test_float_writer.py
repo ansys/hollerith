@@ -50,16 +50,21 @@ def test_write_float_004():
     assert _write_float(-0.001351254342, 10) == "-0.0013513"  # rounding
     assert _write_float(-0.0001351235342, 10) == "-0.0001351"
 
+def test_write_float_000():
+    num1 = -1.5184023950181023415 * (10**22)
+    num2 = 1.51840239501 * (10**22)
+
+    for number in (num1, num2):
+        assert len(_write_float(number, 10)) == 10
+
 
 @pytest.mark.parametrize("width", [10, 16, 20])
 @pytest.mark.parametrize("exponent", range(-24,24,1))
-def test_write_float_005(width, exponent):
+@pytest.mark.parametrize("value", [-1.5184023950181023415, 1.51840239501])
+def test_write_float_005(width, exponent, value):
     """Test formatted length of list of numbers."""
-    num1 = -1.5184023950181023415 * (10**exponent)
-    num2 = 1.51840239501 * (10**exponent)
-
-    for number in (num1, num2):
-        assert len(_write_float(number, width)) == width
+    number = value * (10**exponent)
+    assert len(_write_float(number, width)) == width
 
 
 def test_write_float_006():
