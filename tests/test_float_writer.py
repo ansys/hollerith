@@ -52,12 +52,13 @@ def test_write_float_004():
 
 
 @pytest.mark.parametrize("width", [10, 16, 20])
-def test_write_float_005(width):
+@pytest.mark.parametrize("exponent", range(-24,24,1))
+def test_write_float_005(width, exponent):
     """Test formatted length of list of numbers."""
-    numbers = [-1.5184023950181023415 * (10**i) for i in range(-24, 24, 1)] + [
-        1.51840239501 * (10**i) for i in range(-24, 24, 1)
-    ]
-    for number in numbers:
+    num1 = -1.5184023950181023415 * (10**exponent)
+    num2 = 1.51840239501 * (10**exponent)
+
+    for number in (num1, num2):
         assert len(_write_float(number, width)) == width
 
 
