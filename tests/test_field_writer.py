@@ -40,3 +40,10 @@ def test_field_values_with_nan():
     spec = [holler.Field(int, 10), holler.Field(float, 10), holler.Field(str, 10)]
     result = _get_field_value(spec, [1, float("nan"), "hello"])
     assert result == "         1          hello     "
+
+s = io.StringIO()
+holler.write_float(s, 1.2099, 10)
+holler.write_int(s, 2803, 10)
+holler.write_float(s, float("nan"), 10)
+holler.write_float(s, int, 0, 10)
+s.getvalue()

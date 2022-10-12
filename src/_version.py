@@ -6,7 +6,6 @@ For example:
 version_info = 0, 2, 'dev0'
 
 """
-
 # major, minor, patch
 version_info = 0, 1, "dev0"
 

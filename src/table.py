@@ -1,8 +1,7 @@
 import typing
 
-import pandas as pd
-
 import hollerith
+import pandas as pd
 
 
 def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hollerith.Field]):

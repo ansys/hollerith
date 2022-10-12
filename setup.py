@@ -2,7 +2,6 @@
 import os
 
 import numpy
-
 from setuptools import Extension
 from setuptools import setup
 
