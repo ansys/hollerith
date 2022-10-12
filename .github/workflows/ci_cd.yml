@@ -20,7 +20,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - name: Install pre-commit
         run: |
@@ -42,7 +42,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - name: Create wheel
         run: |
@@ -54,8 +54,8 @@ jobs:
           pip install twine
           twine check dist/*
 
-      - name: Install library, with test extra
-        run: pip install $(echo dist/*)[test]
+      - name: Install library
+        run: pip install $(echo dist/*)
 
       - name: Unit testing
         run: |
@@ -79,7 +79,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - name: Install library
         run: |
@@ -120,7 +120,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - uses: actions/checkout@v2
 

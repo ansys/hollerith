@@ -11,6 +11,9 @@
 #define NULL 0
 #define DOUBLE_BUFFER_MAX_SIZE 30
 
+#include "Python.h"
+#include "pythoncapi_compat.h"
+
 static void right_justify(char* output, int output_size, char* value, int value_size) {
   memset(output, ' ', output_size);
   int int_buffer_len = (int)strlen(value);
