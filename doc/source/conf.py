@@ -1,8 +1,9 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
 
+from ansys_sphinx_theme import ansys_favicon
+from ansys_sphinx_theme import pyansys_logo_black
 from hollerith import __version__
-from ansys_sphinx_theme import pyansys_logo_black, ansys_favicon
 
 # Project information
 project = "hollerith"

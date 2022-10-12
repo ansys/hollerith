@@ -1,13 +1,10 @@
 import io
 
 import hollerith as holler
-
-PRINT=False
+import pytest
 
 def _write_float(value: float, width: int) -> str:
     s = io.StringIO()
-    if PRINT:
-        print((value, width))
     holler.write_float(s, value, width)
     return s.getvalue()
 
@@ -54,18 +51,14 @@ def test_write_float_004():
     assert _write_float(-0.0001351235342, 10) == "-0.0001351"
 
 
-def test_write_float_005():
-    global PRINT
-    PRINT = True
+@pytest.mark.parametrize("width", [10, 16, 20])
+def test_write_float_005(width):
     """Test formatted length of list of numbers."""
     numbers = [-1.5184023950181023415 * (10**i) for i in range(-24, 24, 1)] + [
         1.51840239501 * (10**i) for i in range(-24, 24, 1)
     ]
     for number in numbers:
-        assert len(_write_float(number, 10)) == 10
-        assert len(_write_float(number, 16)) == 16
-        assert len(_write_float(number, 20)) == 20
-    PRINT = False
+        assert len(_write_float(number, width)) == width
 
 
 def test_write_float_006():
