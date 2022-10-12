@@ -83,8 +83,13 @@ jobs:
           pip install twine
           twine check dist/*
 
-      - name: Install library
+      - name: Install library on Linux
+        if: ${{ runner.os == 'Linux' }}
         run: pip install $(echo dist/*)
+
+      - name: Install library on Windows
+        if: ${{ runner.os == 'Windows' }}
+        run: pip install (get-item .\dist\*.whl)
 
       - name: Unit testing
         run: |
