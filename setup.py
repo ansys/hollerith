@@ -56,9 +56,6 @@ setup(
             language="c",
         ),
     ],
-    python_requires=">=3.7.*",
-    install_requires=[
-        "numpy>=1.16.0",
-        "pandas>=1.3.2"
-    ],
+    python_requires=">=3.9.*",
+    install_requires=["numpy>=1.16.0", "pandas>=1.3.2"],
 )

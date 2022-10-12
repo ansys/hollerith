@@ -59,13 +59,14 @@ jobs:
 
       - name: Unit testing
         run: |
+          pip install -r requirements/requirements_test.txt
           cd tests  # so we're testing the install, not local
           pytest -vx
 
       - name: Upload wheel
         uses: actions/upload-artifact@v2
         with:
-          name: ansys-product-library-wheel
+          name: hollerith-wheel
           path: dist/
           retention-days: 7
 
@@ -125,7 +126,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: ansys-product-library-wheel
+          name: hollerith-wheel
 
       - uses: actions/download-artifact@v2
         with:

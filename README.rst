@@ -10,7 +10,7 @@ Include installation directions.  Note that this README will be
 included in your PyPI package, so be sure to include ``pip``
 directions along with developer installation directions.  For example.
 
-Install <PyAnsys Library> with:
+Install hollerith with:
 
 .. code::
 
