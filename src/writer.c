@@ -9,7 +9,7 @@
 #include "numpy/arrayobject.h"
 
 #define NULL 0
-#define DOUBLE_BUFFER_MAX_SIZE 26
+#define DOUBLE_BUFFER_MAX_SIZE 30
 
 static void right_justify(char* output, int output_size, char* value, int value_size) {
   memset(output, ' ', output_size);
