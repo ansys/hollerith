@@ -88,13 +88,14 @@ jobs:
 
       - name: Build HTML
         run: |
-          poetry run make -C doc html SPHINXOPTS="-W"
+          pip install -r requirements/requirements_docs.txt
+          make -C doc html SPHINXOPTS="-W"
 
       - name: Build PDF Documentation
         run: |
           sudo apt update
-          sudo apt-get install -y texlive-latex-extra latexmk
-          poetry run make -C doc latexpdf
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -qy texlive-latex-extra latexmk
+          make -C doc latexpdf
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v2
