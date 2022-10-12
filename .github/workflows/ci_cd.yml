@@ -61,7 +61,7 @@ jobs:
         run: |
           pip install -r requirements/requirements_test.txt
           cd tests  # so we're testing the install, not local
-          pytest -vx
+          pytest -svx
 
       - name: Upload wheel
         uses: actions/upload-artifact@v2

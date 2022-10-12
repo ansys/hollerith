@@ -2,9 +2,12 @@ import io
 
 import hollerith as holler
 
+PRINT=False
 
 def _write_float(value: float, width: int) -> str:
     s = io.StringIO()
+    if PRINT:
+        print((value, width))
     holler.write_float(s, value, width)
     return s.getvalue()
 
@@ -52,6 +55,8 @@ def test_write_float_004():
 
 
 def test_write_float_005():
+    global PRINT
+    PRINT = True
     """Test formatted length of list of numbers."""
     numbers = [-1.5184023950181023415 * (10**i) for i in range(-24, 24, 1)] + [
         1.51840239501 * (10**i) for i in range(-24, 24, 1)
@@ -60,6 +65,7 @@ def test_write_float_005():
         assert len(_write_float(number, 10)) == 10
         assert len(_write_float(number, 16)) == 16
         assert len(_write_float(number, 20)) == 20
+    PRINT = False
 
 
 def test_write_float_006():
