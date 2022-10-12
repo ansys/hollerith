@@ -26,9 +26,8 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git-all
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
           pip install pre-commit
-          git config --global --add safe.directory /__w/dynalib/dynalib
 
       - uses: actions/checkout@v3
       - name: Run pre-commit
