@@ -16,20 +16,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
-      - name: Install pre-commit requirements
+      - name: Install pre-commit
         run: |
-          pip install poetry
-          poetry install -E pre-commit
+          sudo apt-get -y update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
+          pip install pre-commit
 
+      - uses: actions/checkout@v3
       - name: Run pre-commit
-        run: |
-          poetry run pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+        run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   main:
     name: Build and Testing
@@ -40,7 +42,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Create wheel
         run: |
@@ -57,13 +59,14 @@ jobs:
 
       - name: Unit testing
         run: |
+          pip install -r requirements/requirements_test.txt
           cd tests  # so we're testing the install, not local
-          pytest -vx
+          pytest -svx
 
       - name: Upload wheel
         uses: actions/upload-artifact@v2
         with:
-          name: ansys-product-library-wheel
+          name: hollerith-wheel
           path: dist/
           retention-days: 7
 
@@ -76,22 +79,24 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
-      - name: Install library, with docs extra
+      - name: Install library
         run: |
-          pip install poetry
-          poetry install -E docs
+          sudo apt-get -y update
+          sudo apt-get -y install python3-pip
+          pip install -e .
 
       - name: Build HTML
         run: |
-          poetry run make -C doc html SPHINXOPTS="-W"
+          pip install -r requirements/requirements_docs.txt
+          make -C doc html SPHINXOPTS="-W"
 
       - name: Build PDF Documentation
         run: |
           sudo apt update
-          sudo apt-get install -y texlive-latex-extra latexmk
-          poetry run make -C doc latexpdf
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -qy texlive-latex-extra latexmk
+          make -C doc latexpdf
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v2
@@ -121,7 +126,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: ansys-product-library-wheel
+          name: hollerith-wheel
 
       - uses: actions/download-artifact@v2
         with:
