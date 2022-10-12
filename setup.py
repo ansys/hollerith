@@ -19,7 +19,7 @@ with open(version_file, mode="r") as fd:
     # execute file from raw string
     exec(fd.read())
 
-with open(os.path.join(HERE, 'README.rst'), encoding='utf-8') as f:
+with open(os.path.join(HERE, "README.rst"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
