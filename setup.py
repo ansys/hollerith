@@ -10,15 +10,17 @@ if os.name == "nt":  # windows
 elif os.name == "posix":  # linux/mac os
     extra_compile_args = ["-O3", "-w"]
 
+HERE = os.path.abspath(os.path.dirname(__file__))
 
 # Get version from version info
 __version__ = None
-this_file = os.path.dirname(__file__)
-version_file = os.path.join(this_file, "src", "_version.py")
+version_file = os.path.join(HERE, "src", "_version.py")
 with open(version_file, mode="r") as fd:
     # execute file from raw string
     exec(fd.read())
 
+with open(os.path.join(HERE, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name="hollerith",
@@ -26,6 +28,7 @@ setup(
     package_dir={"hollerith": "src"},
     version=__version__,
     description="C-extension module for efficient writing of fixed width text",
+    long_description=long_description,
     license="MIT",
     classifiers=[
         "Development Status :: 4 - Beta",
