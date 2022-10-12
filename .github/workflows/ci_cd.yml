@@ -54,8 +54,8 @@ jobs:
           pip install twine
           twine check dist/*
 
-      - name: Install library, with test extra
-        run: pip install $(echo dist/*)[test]
+      - name: Install library
+        run: pip install $(echo dist/*)
 
       - name: Unit testing
         run: |
