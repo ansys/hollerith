@@ -4,7 +4,9 @@ import typing
 import hollerith as holler
 
 
-def write_field(buf: typing.IO[typing.AnyStr], field_type: type, value: typing.Any, width: int) -> None:
+def write_field(
+    buf: typing.IO[typing.AnyStr], field_type: type, value: typing.Any, width: int
+) -> None:
     if field_type == None:
         holler.write_spaces(buf, width)
     elif field_type == str:

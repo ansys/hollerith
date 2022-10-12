@@ -24,7 +24,7 @@ with open(version_file, mode="r") as fd:
 setup(
     name="hollerith",
     packages=["hollerith"],
-    package_dir={'hollerith': 'src'},
+    package_dir={"hollerith": "src"},
     version=__version__,
     description="C-extension module for efficient writing of fixed width text",
     license="MIT",
