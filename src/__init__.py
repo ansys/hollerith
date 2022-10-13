@@ -9,4 +9,5 @@ from .table import write_table
 
 
 def foo():
+    """Hello"""
     pass
