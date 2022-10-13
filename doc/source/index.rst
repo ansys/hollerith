@@ -10,12 +10,13 @@
    :maxdepth: 3
 
    class_documentation
+   write_primitive_types
 
 
 Code Examples
 ~~~~~~~~~~~~~
-Here's a quick preview for how Python code looks using
-``hollerith```.  For more examples, click the links at the
+Here's a quick preview for how Python code looks using ``hollerith``.
+For more examples, click the links at the
 top of the page to see function, method, and class documentation.
 
 

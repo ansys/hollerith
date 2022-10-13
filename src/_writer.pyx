@@ -34,12 +34,12 @@ cdef throw_write_error(code: int):
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, value, width: int):
-    """writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
     output: int = write_float_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
 cpdef write_int_to_buffer(buffer, value, width: int):
-    """writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
     output: int = write_int_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
