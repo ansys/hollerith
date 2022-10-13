@@ -10,3 +10,6 @@ API Reference
 
    hollerith
    hollerith._writer
+
+
+.. autofunction:: hollerith._writer.write_float_to_buffer
