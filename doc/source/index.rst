@@ -35,4 +35,4 @@ Rendered Python Code
 
 API Reference
 ~~~~~~~~~~~~~
-To see a full API reference, see :ref:`_ref_api_reference`
+To see a full API reference, see :ref:`ref_api_reference`
