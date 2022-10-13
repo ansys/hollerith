@@ -1,7 +1,7 @@
-.. _ref_api_documentation:
+.. _ref_api_reference:
 
 ***************************
-API Documentation
+API Reference
 ***************************
 
 .. autosummary::
