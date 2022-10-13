@@ -9,10 +9,11 @@ class Field:
     in a fixed width line
 
     Args:
-        type (type): The type of the field. This could be one of 
+        type (type): The type of the field. This could be one of
                      `None`, `str`, `int`, or `float`.
         width (int): The width of the field in characters.
 
     """
+
     type: type = None
     width: int = None

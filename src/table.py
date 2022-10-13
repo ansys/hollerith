@@ -6,14 +6,19 @@ import pandas as pd
 
 def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hollerith.Field]):
     """
-    buffer: buffer to write to - it could be a file or a StringIO object, for example
-    spec: specification of the table.
-    numrows: int
-        the number of rows to write. This might be larger than the size of the numpy
-        array suggests, if so, append with empty lines with the right size.
-    arr: 2d numpy array of the table data
+    Write table to buffer with fixed width columns
 
-    assume by now that all empty columns are already added to the spec
+    buffer:
+        Buffer to write to - it could be a file or a StringIO object, for example. The only
+        requirement is that itt must contain a write attribute that is callable with a single
+        string argument.
+    table: pandas.DataFrame
+        Table to write, represented as a pandas DataFrame.
+    spec: list
+        Specification of the table. Must be the same length as the number of columns in `table`.
+    numrows: int
+        The number of rows to write. This might be larger than the length of `table`.
+        If so, append with empty lines with the right size.
     """
     # write_numpy_table expects a numpy array of object.  tables of a narrower type are possible,
     # such as int or float, but to avoid specializing write_numpy_table, we cast to object here.
