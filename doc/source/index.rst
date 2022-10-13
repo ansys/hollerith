@@ -10,7 +10,6 @@
    :maxdepth: 3
 
    class_documentation
-   write_primitive_types
 
 
 Code Examples

@@ -9,4 +9,4 @@ API Documentation
    :recursive:
 
    hollerith
-   write_float
+   hollerith._writer
