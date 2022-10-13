@@ -1,6 +1,7 @@
 """Sphinx documentation configuration file."""
+import os
+import sys
 from datetime import datetime
-import sys, os
 
 from ansys_sphinx_theme import ansys_favicon
 from hollerith import __version__
@@ -40,7 +41,7 @@ numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
 
 
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath("../../src"))
 
 # Consider enabling numpydoc validation. See:
 # https://numpydoc.readthedocs.io/en/latest/validation.html#
