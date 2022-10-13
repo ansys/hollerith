@@ -34,7 +34,17 @@ cdef throw_write_error(code: int):
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, value, width: int):
-    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
+
+    Parameters
+    ----------
+    buffer : buffer
+        Buffer object
+    value : np.ndarray?
+        values to write
+    width : int
+        Width
+    """
     output: int = write_float_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
