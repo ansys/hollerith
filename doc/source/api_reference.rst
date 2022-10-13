@@ -1,7 +1,7 @@
-.. _ref_api_documentation:
+.. _ref_api_reference:
 
 ***************************
-API Documentation
+API Reference
 ***************************
 
 .. autosummary::
@@ -9,4 +9,4 @@ API Documentation
    :recursive:
 
    hollerith
-   write_float
+   hollerith._writer

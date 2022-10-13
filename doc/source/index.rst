@@ -9,15 +9,12 @@
    :hidden:
    :maxdepth: 3
 
-   class_documentation
-   write_primitive_types
+   api_reference
 
 
 Code Examples
 ~~~~~~~~~~~~~
 Here's a quick preview for how Python code looks using ``hollerith``.
-For more examples, click the links at the
-top of the page to see function, method, and class documentation.
 
 
 Rendered Python Code
@@ -36,3 +33,6 @@ Rendered Python Code
    >>> s.getvalue()
    '    1.2099      2803                   0'
 
+API Reference
+~~~~~~~~~~~~~
+To see a full API reference, see :ref:`ref_api_reference`
