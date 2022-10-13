@@ -34,22 +34,112 @@ cdef throw_write_error(code: int):
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, value, width: int):
-    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """
+        Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
+
+        Parameters
+        ----------
+        buffer :
+            Buffer to write to - it could be a file or a StringIO object, for example. The only
+            requirement is that it must contain a write attribute that is callable with a single
+            string argument.
+        value: float
+            Float to write.
+        width: int
+            The number of characters to write
+
+        Examples
+        --------
+
+        >>> import io
+        >>> import hollerith as holler
+        >>> buffer = io.StringIO()
+        >>> holler.write_float(s, 1.0, 16)
+        >>> print(buffer.getvalue())
+            '             1.0'
+    """
     output: int = write_float_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
 cpdef write_int_to_buffer(buffer, value, width: int):
-    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified."""
+    """
+        Writes a string representing the int `value` to `buffer` within the given `width`, right justified.
+
+        Parameters
+        ----------
+        buffer :
+            Buffer to write to - it could be a file or a StringIO object, for example. The only
+            requirement is that it must contain a write attribute that is callable with a single
+            string argument.
+        value: int
+            Integer to write. This could also be a numpy.int32
+        width: int
+            The number of characters to write
+
+        Examples
+        --------
+
+        >>> import io
+        >>> import hollerith as holler
+        >>> buffer = io.StringIO()
+        >>> holler.write_int(s, 145, 16)
+        >>> print(buffer.getvalue())
+            '             145'
+    """
     output: int = write_int_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
 cpdef write_string_to_buffer(buffer, value, width: int):
-    """Writes a string representing the float `value` to `buffer` within the given `width`, left justified."""
+    """
+        Writes a string representing the string `value` to `buffer` within the given `width`, left justified.
+
+        Parameters
+        ----------
+        buffer :
+            Buffer to write to - it could be a file or a StringIO object, for example. The only
+            requirement is that it must contain a write attribute that is callable with a single
+            string argument.
+        value: string
+            String to write.
+        width: int
+            The number of characters to write
+
+        Examples
+        --------
+
+        >>> import io
+        >>> import hollerith as holler
+        >>> buffer = io.StringIO()
+        >>> holler.write_int(s, "hello", 16)
+        >>> print(buffer.getvalue())
+            'hello           '
+    """
     output: int = write_string_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
 cpdef write_null_to_buffer(buffer, width: int):
-    """Writes `width` space characters to the buffer"""
+    """
+        Writes `width` space characters to `buffer`
+
+        Parameters
+        ----------
+        buffer :
+            Buffer to write to - it could be a file or a StringIO object, for example. The only
+            requirement is that it must contain a write attribute that is callable with a single
+            string argument.
+        width: int
+            The number of spaces to write
+
+        Examples
+        --------
+
+        >>> import io
+        >>> import hollerith as holler
+        >>> buffer = io.StringIO()
+        >>> holler.write_null(s, 16)
+        >>> print(buffer.getvalue())
+            '                '
+    """
     output: int = write_null_value(buffer.write, width)
     throw_write_error(output)
 
@@ -118,14 +208,22 @@ cdef write_row(write, spec: s_fields, np.ndarray[object, ndim=1] row_arr):
 
 cpdef write_numpy_table(buffer, spec: typing.List, numrows: int, np.ndarray[object, ndim=2] arr):
     """
-    Write numpy table to buffer
+        Write 2d numpy array to buffer with fixed width columns
 
-    buffer: buffer to write to - it could be a file or a StringIO object
-    spec: specification of the table column types and widths
-    numrows: int
-        the number of rows to write. This might be larger than the size of the numpy
-        array suggests, if so, append with empty lines with the right size.
-    arr: 2d numpy array of the table data
+        Parameters
+        ----------
+        buffer :
+            Buffer to write to - it could be a file or a StringIO object, for example. The only
+            requirement is that it must contain a write attribute that is callable with a single
+            string argument.
+        spec: List[hollerith.Field]
+            Specification of the table. Must be the same length as the number of columns in `table`.
+        numrows: int
+            The number of rows to write. This might be larger than the length of `table`.
+            If so, append with empty lines with the right size.
+        arr: np.ndarray[object, ndim=2]
+            2D array to write.
+
     """
     # when dealing with this numpy array - assume that all the values are object
     write: typing.Callable = buffer.write
