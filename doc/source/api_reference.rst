@@ -12,4 +12,6 @@ API Reference
    hollerith._writer
 
 
-.. autofunction:: hollerith._writer.write_float_to_buffer
+.. currentmodule:: hollerith._writer
+
+.. autofunction:: write_float_to_buffer
