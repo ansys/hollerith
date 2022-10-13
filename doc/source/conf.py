@@ -3,7 +3,6 @@ from datetime import datetime
 
 from ansys_sphinx_theme import ansys_favicon
 from hollerith import __version__
-import hollerith
 
 # Project information
 project = "hollerith"

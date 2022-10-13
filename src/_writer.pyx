@@ -44,12 +44,12 @@ cpdef write_int_to_buffer(buffer, value, width: int):
     throw_write_error(output)
 
 cpdef write_string_to_buffer(buffer, value, width: int):
-    """writes a string representing the float `value` to `buffer` within the given `width`, left justified."""
+    """Writes a string representing the float `value` to `buffer` within the given `width`, left justified."""
     output: int = write_string_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
 cpdef write_null_to_buffer(buffer, width: int):
-    """writes `width` space characters to the buffer"""
+    """Writes `width` space characters to the buffer"""
     output: int = write_null_value(buffer.write, width)
     throw_write_error(output)
 
@@ -118,14 +118,14 @@ cdef write_row(write, spec: s_fields, np.ndarray[object, ndim=1] row_arr):
 
 cpdef write_numpy_table(buffer, spec: typing.List, numrows: int, np.ndarray[object, ndim=2] arr):
     """
+    Write numpy table to buffer
+
     buffer: buffer to write to - it could be a file or a StringIO object
     spec: specification of the table column types and widths
     numrows: int
         the number of rows to write. This might be larger than the size of the numpy
         array suggests, if so, append with empty lines with the right size.
     arr: 2d numpy array of the table data
-
-    assume by now that all empty columns are already added to the spec
     """
     # when dealing with this numpy array - assume that all the values are object
     write: typing.Callable = buffer.write
