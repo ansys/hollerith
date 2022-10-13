@@ -6,5 +6,5 @@ Write primitives
 
 .. currentmodule:: hollerith
 
-.. autofunction:: write_float
+.. autofunction:: foo
 
