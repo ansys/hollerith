@@ -22,6 +22,13 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
             The number of rows to write. This might be larger than the length of `table`.
             If so, append with empty lines with the right size.
 
+        Notes
+        -----
+        Here, we convert the table to a numpy 2-d array with a type of object in order to call
+        `hollerith._writer.write_numpy_table`. numpy arrays of a narrower type are possible, such
+        as arrays of ints or floats, and this conversion can be expensive. A future optimization
+        would be to expose Cython-level methods in `_writer`.
+
         Examples
         --------
 
@@ -36,13 +43,6 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
             '             1.0                 2.0
                           3.0                 4.0
                           5.0                 6.0'
-
-        Notes
-        -----
-        Here, we convert the table to a numpy 2-d array with a type of object in order to call
-        `hollerith._writer.write_numpy_table`. numpy arrays of a narrower type are possible, such
-        as arrays of ints or floats, and this conversion can be expensive. A future optimization
-        would be to expose Cython-level methods in `_writer`.
     """
 
     numpy_table = table.to_numpy().astype(object)
