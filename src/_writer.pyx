@@ -34,8 +34,7 @@ cdef throw_write_error(code: int):
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, value: float, width: int):
-    """
-        Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
+    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
 
         Parameters
         ----------
@@ -62,8 +61,7 @@ cpdef write_float_to_buffer(buffer, value: float, width: int):
     throw_write_error(output)
 
 cpdef write_int_to_buffer(buffer, value: int, width: int):
-    """
-        Writes a string representing the int `value` to `buffer` within the given `width`, right justified.
+    """Writes a string representing the int `value` to `buffer` within the given `width`, right justified.
 
         Parameters
         ----------
@@ -90,8 +88,7 @@ cpdef write_int_to_buffer(buffer, value: int, width: int):
     throw_write_error(output)
 
 cpdef write_string_to_buffer(buffer, value: str, width: int):
-    """
-        Writes a string representing the string `value` to `buffer` within the given `width`, left justified.
+    """Writes a string representing the string `value` to `buffer` within the given `width`, left justified.
 
         Parameters
         ----------
@@ -118,8 +115,7 @@ cpdef write_string_to_buffer(buffer, value: str, width: int):
     throw_write_error(output)
 
 cpdef write_null_to_buffer(buffer, width: int):
-    """
-        Writes `width` space characters to `buffer`
+    """Writes `width` space characters to `buffer`
 
         Parameters
         ----------

@@ -5,8 +5,7 @@ import pandas as pd
 
 
 def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hollerith.Field]):
-    """
-    Write table to buffer with fixed width columns
+    """Write table to buffer with fixed width columns
 
     Parameters
     ----------

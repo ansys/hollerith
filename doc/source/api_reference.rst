@@ -4,9 +4,8 @@
 API Reference
 ***************************
 
-.. automodule:: hollerith
-   :recursive:
+.. toctree::
+   :maxdepth: 3
 
-.. automodule:: hollerith._writer
-   :recursive:
-
+   API/field
+   API/write
