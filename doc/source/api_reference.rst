@@ -4,9 +4,11 @@
 API Reference
 ***************************
 
-.. autosummary::
+.. automodule:: hollerith
    :toctree: _autosummary/
    :recursive:
 
-   hollerith
-   hollerith._writer
+.. automodule:: hollerith._writer
+   :toctree: _autosummary/
+   :recursive:
+
