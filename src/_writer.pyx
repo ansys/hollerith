@@ -33,7 +33,7 @@ cdef throw_write_error(code: int):
     #      - or return an error code with a more useful message?
     raise Exception(f"error in hollerith: {code}")
 
-cpdef write_float_to_buffer(buffer, value, width: int):
+cpdef write_float_to_buffer(buffer, value: float, width: int):
     """
         Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
 
@@ -61,7 +61,7 @@ cpdef write_float_to_buffer(buffer, value, width: int):
     output: int = write_float_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-cpdef write_int_to_buffer(buffer, value, width: int):
+cpdef write_int_to_buffer(buffer, value: int, width: int):
     """
         Writes a string representing the int `value` to `buffer` within the given `width`, right justified.
 
@@ -89,7 +89,7 @@ cpdef write_int_to_buffer(buffer, value, width: int):
     output: int = write_int_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-cpdef write_string_to_buffer(buffer, value, width: int):
+cpdef write_string_to_buffer(buffer, value: str, width: int):
     """
         Writes a string representing the string `value` to `buffer` within the given `width`, left justified.
 
