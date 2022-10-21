@@ -1,0 +1,12 @@
+documentation:
+- doc/source/**/*
+- README.rst
+maintenance:
+- .github/**/*
+- .flake8
+- setup.py
+- pyproject.toml
+dependencies:
+- requirements/*
+testing:
+- tests/*
