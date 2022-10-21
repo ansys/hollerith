@@ -2,6 +2,7 @@
 from datetime import datetime
 
 from ansys_sphinx_theme import ansys_favicon
+from ansys_sphinx_theme import pyansys_logo_black
 from hollerith import __version__
 
 # Project information
@@ -11,12 +12,14 @@ author = "Ansys Inc."
 release = version = __version__
 
 # use the default pyansys logo
+html_logo = pyansys_logo_black
 html_favicon = ansys_favicon
 html_theme = "ansys_sphinx_theme"
+html_short_title = html_title = "Hollerith"
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pyansys-sphinx-theme",
+    "github_url": "https://github.com/pyansys/hollerith",
     "show_prev_next": False,
 }
 
@@ -32,6 +35,8 @@ extensions = [
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/dev", None),
+    "numpy": ("https://numpy.org/devdocs", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
 }
 
 # numpydoc configuration

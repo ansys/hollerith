@@ -13,18 +13,19 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
         Buffer to write to - it could be a file or a StringIO object, for example. The only
         requirement is that it must contain a write attribute that is callable with a single
         string argument.
-    table: pandas.DataFrame
+    table : pandas.DataFrame
         Table to write.
-    spec: List[hollerith.Field]
-        Specification of the table. Must be the same length as the number of columns in `table`.
-    numrows: int
+    numrows : int
         The number of rows to write. This might be larger than the length of `table`.
         If so, append with empty lines with the right size.
+    spec : List[hollerith.Field]
+        Specification of the table. Must be the same length as the number of columns in `table`.
 
     Notes
     -----
     Here, we convert the table to a numpy 2-d array with a type of object in order to call
-    `hollerith._writer.write_numpy_table`. numpy arrays of a narrower type are possible, such
+    :class:`write_numpy_table <hollerith._writer.write_numpy_table>`.
+    Numpy arrays of a narrower type are possible, such
     as arrays of ints or floats, and this conversion can be expensive. A future optimization
     would be to expose Cython-level methods in `_writer`.
 
@@ -37,7 +38,7 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
     >>> buffer = io.StringIO()
     >>> spec = [holler.Field(float, 20), holler.Field(float, 20)]
     >>> table = pd.DataFrame({"a": [1.0, 3.0, 5.0], "b": [2.0, 4.0, 6.0]})
-    >>> result = holler.write_table(buffer, table, spec, 3)
+    >>> result = holler.write_table(buffer, table, 3, spec)
     >>> print(buffer.getvalue())
         '             1.0                 2.0
                       3.0                 4.0
