@@ -15,11 +15,11 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
         string argument.
     table: pandas.DataFrame
         Table to write.
-    spec: List[hollerith.Field]
-        Specification of the table. Must be the same length as the number of columns in `table`.
     numrows: int
         The number of rows to write. This might be larger than the length of `table`.
         If so, append with empty lines with the right size.
+    spec: List[hollerith.Field]
+        Specification of the table. Must be the same length as the number of columns in `table`.
 
     Notes
     -----
@@ -37,7 +37,7 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
     >>> buffer = io.StringIO()
     >>> spec = [holler.Field(float, 20), holler.Field(float, 20)]
     >>> table = pd.DataFrame({"a": [1.0, 3.0, 5.0], "b": [2.0, 4.0, 6.0]})
-    >>> result = holler.write_table(buffer, table, spec, 3)
+    >>> result = holler.write_table(buffer, table, 3, spec)
     >>> print(buffer.getvalue())
         '             1.0                 2.0
                       3.0                 4.0
