@@ -13,18 +13,19 @@ def write_table(buffer, table: pd.DataFrame, numrows: int, spec: typing.List[hol
         Buffer to write to - it could be a file or a StringIO object, for example. The only
         requirement is that it must contain a write attribute that is callable with a single
         string argument.
-    table: pandas.DataFrame
+    table : pandas.DataFrame
         Table to write.
-    numrows: int
+    numrows : int
         The number of rows to write. This might be larger than the length of `table`.
         If so, append with empty lines with the right size.
-    spec: List[hollerith.Field]
+    spec : List[hollerith.Field]
         Specification of the table. Must be the same length as the number of columns in `table`.
 
     Notes
     -----
     Here, we convert the table to a numpy 2-d array with a type of object in order to call
-    `hollerith._writer.write_numpy_table`. numpy arrays of a narrower type are possible, such
+    :class:`write_numpy_table <hollerith._writer.write_numpy_table>`.
+    Numpy arrays of a narrower type are possible, such
     as arrays of ints or floats, and this conversion can be expensive. A future optimization
     would be to expose Cython-level methods in `_writer`.
 

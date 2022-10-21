@@ -34,7 +34,7 @@ cdef throw_write_error(code: int):
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, value: float, width: int):
-    """Writes a string representing the float `value` to `buffer` within the given `width`, right justified.
+    """Writes a string representing the float ``value`` to ``buffer`` within the given ``width``, right justified.
 
         Parameters
         ----------
@@ -96,9 +96,9 @@ cpdef write_string_to_buffer(buffer, value: str, width: int):
             Buffer to write to - it could be a file or a StringIO object, for example. The only
             requirement is that it must contain a write attribute that is callable with a single
             string argument.
-        value: string
+        value : string
             String to write.
-        width: int
+        width : int
             The number of characters to write
 
         Examples
@@ -107,7 +107,7 @@ cpdef write_string_to_buffer(buffer, value: str, width: int):
         >>> import io
         >>> import hollerith as holler
         >>> buffer = io.StringIO()
-        >>> holler.write_string_to_buffer(s, "hello", 16)
+        >>> holler.write_string(s, "hello", 16)
         >>> print(buffer.getvalue())
             'hello           '
     """
