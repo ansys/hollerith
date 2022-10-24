@@ -76,8 +76,8 @@ jobs:
         continue-on-error: true
 
       - name: Create linux wheel
-        if: ${{ runner.os == 'Linux' }}
         uses: pypa/cibuildwheel@v2.10.2
+        if: ${{ runner.os == 'Linux' }}
         env:
             CIBW_BUILD: "cp39-manylinux_x86_64",
             CIBW_SKIP: "",
