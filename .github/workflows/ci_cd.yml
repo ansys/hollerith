@@ -76,7 +76,15 @@ jobs:
         continue-on-error: true
 
       - name: Create wheel
-        run: |
+        if: ${{ runner.os == 'Linux' }}
+        uses: pypa/cibuildwheel@v2.10.2
+        env:
+            CIBW_BUILD: "cp39-manylinux_x86_64",
+            CIBW_SKIP: "",
+            CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
+
+      - name: Create wheel
+        if: ${{ runner.os == 'Linux' }}
           pip install build
           python -m build --wheel
 
@@ -98,6 +106,12 @@ jobs:
           pip install -r requirements/requirements_test.txt
           cd tests  # so we're testing the install, not local
           pytest -svx
+
+      - name: Build sdist
+        run: python -m build -s
+
+      - name: Check metadata
+        run: twine check dist/*
 
       - name: Upload wheel
         uses: actions/upload-artifact@v3
@@ -184,15 +198,15 @@ jobs:
           CLEAN: true
 
       # note how we use the PyPI tokens
-      - name: Upload to Azure PyPi (disabled)
-        run: |
-          pip install twine
-          twine upload --skip-existing ./**/*.whl
+      - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          python -m twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
 
-      - name: Release
+      - name: Release to Github
         uses: softprops/action-gh-release@v1
         with:
           files: |
