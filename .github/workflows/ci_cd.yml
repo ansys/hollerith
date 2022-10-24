@@ -38,7 +38,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ['3.9']
         #['3.7', '3.8', '3.9', '3.10']
         os: [ubuntu-latest]
         #, windows-latest]
@@ -75,7 +75,7 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
 
-      - name: Create wheel
+      - name: Create linux wheel
         if: ${{ runner.os == 'Linux' }}
         uses: pypa/cibuildwheel@v2.10.2
         env:
@@ -83,8 +83,8 @@ jobs:
             CIBW_SKIP: "",
             CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
 
-      - name: Create wheel
-        if: ${{ runner.os == 'Linux' }}
+      - name: Create windows wheel
+        if: ${{ runner.os == 'Windows' }}
           pip install build
           python -m build --wheel
 
