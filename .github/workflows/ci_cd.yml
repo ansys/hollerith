@@ -76,6 +76,7 @@ jobs:
         continue-on-error: true
 
       - name: Create wheel
+        run: |
           pip install build
           python -m build --wheel
 
