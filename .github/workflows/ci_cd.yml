@@ -77,16 +77,9 @@ jobs:
 
       - name: Create linux wheel
         uses: pypa/cibuildwheel@v2.10.2
-        if: ${{ runner.os == 'Linux' }}
         env:
-            CIBW_BUILD: "cp39-manylinux_x86_64",
             CIBW_SKIP: "",
             CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
-
-      - name: Create windows wheel
-        if: ${{ runner.os == 'Windows' }}
-          pip install build
-          python -m build --wheel
 
       - name: Validate wheel
         run: |
