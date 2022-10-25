@@ -76,9 +76,12 @@ jobs:
         continue-on-error: true
 
       - name: Create wheel
-        run: |
-          pip install build
-          python -m build --wheel
+        uses: pypa/cibuildwheel@v2.11.1
+        with:
+          package-dir: .
+          output-dir: wheelhouse
+          config-file: "{package}/pyproject.toml"
+
 
       - name: Validate wheel
         run: |
@@ -88,10 +91,6 @@ jobs:
       - name: Install library on Linux
         if: ${{ runner.os == 'Linux' }}
         run: pip install $(echo dist/*)
-
-      - name: Install library on Windows
-        if: ${{ runner.os == 'Windows' }}
-        run: pip install (get-item .\dist\*.whl)
 
       - name: Unit testing
         run: |
@@ -109,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: hollerith-${{ runner.os }}-${{ matrix.python-version }}
-          path: dist/
+          path: ./wheelhouse/*.whl
           retention-days: 7
 
   docs:

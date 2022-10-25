@@ -54,6 +54,7 @@ setup(
             ],
             extra_compile_args=extra_compile_args,
             language="c",
+            optional=os.environ.get('CIBUILDWHEEL', '0') != '1',
         ),
     ],
     python_requires=">=3.7.*",
