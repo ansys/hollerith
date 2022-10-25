@@ -86,11 +86,11 @@ jobs:
       - name: Validate wheel
         run: |
           pip install twine
-          twine check dist/*
+          twine check wheelhouse/*
 
       - name: Install library on Linux
         if: ${{ runner.os == 'Linux' }}
-        run: pip install $(echo dist/*)
+        run: pip install $(echo wheelhouse/*)
 
       - name: Unit testing
         run: |
