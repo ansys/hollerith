@@ -5,6 +5,7 @@ requires = [
     "oldest-supported-numpy",
     "setuptools>=45.0",
     "wheel>=0.37.0",
+    "cibuildwheel==2.11.1",
 ]
 
 [tool.pytest.ini_options]
@@ -20,7 +21,6 @@ filterwarnings = [
 ]
 
 [tool.cibuildwheel]
-before-all = "apt install libpng-dev"
 archs = ["auto64"]  # 64-bit only
 skip = "pp* *musllinux*"  # disable PyPy and musl-based wheels
 
