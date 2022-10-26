@@ -47,7 +47,6 @@ jobs:
             cibw_archs: "aarch64"
 
     steps:
-
       - name: Set up QEMU
         if: matrix.cibw_archs == 'aarch64'
         uses: docker/setup-qemu-action@v2
@@ -67,9 +66,11 @@ jobs:
         uses: pypa/cibuildwheel@v2.11.1
         env:
           CIBW_BUILD: "cp39-*"
-          CIBW_SKIP: "*-musllinux* *-manylinux_i686*"
+          CIBW_SKIP: "*-musllinux* *-manylinux_i686* *-manylinux1*"
           CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64:latest
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
+          CIBW_BEFORE_TEST: pip install -r requirements/requirements_test.txt
+          CIBW_TEST_COMMAND: pytest {package}/tests
 
       - name: Upload wheel
         uses: actions/upload-artifact@v3
