@@ -139,11 +139,10 @@ jobs:
           cd tests  # so we're testing the install, not local
           pytest -svx
 
-
       - name: Build sdist
         run: |
-        pip install build
-        python -m build -s
+          pip install build
+          python -m build -s
 
       - name: Check metadata
         run: |
