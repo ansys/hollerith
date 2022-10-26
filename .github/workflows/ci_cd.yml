@@ -38,9 +38,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ['3.9']
         #['3.7', '3.8', '3.9', '3.10']
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-11]
+        cibw_archs: ["auto"]
+        include:
+          - os: ubuntu-20.04
+            cibw_archs: "aarch64"
         #, windows-latest]
 
     steps:
@@ -75,17 +79,14 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
 
-      - name: Create wheel
+      - name: Create wheel for CPython 3.9
         uses: pypa/cibuildwheel@v2.11.1
-        with:
-          package-dir: .
-          output-dir: wheelhouse
-          config-file: "{package}/pyproject.toml"
-
-      - name: Validate wheel
-        run: |
-          pip install twine
-          twine check wheelhouse/*
+         env:
+          CIBW_BUILD: "cp39-*"
+          CIBW_SKIP: "*-musllinux*"
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
+          CIBW_ARCHS: ${{ matrix.cibw_archs }}
 
       - name: Upload wheel
         uses: actions/upload-artifact@v3
@@ -96,7 +97,7 @@ jobs:
 
       - name: Install library on Linux
         if: ${{ runner.os == 'Linux' }}
-        run: pip install $(echo wheelhouse/*)
+        run: pip install -e .
 
       - name: Unit testing
         run: |
