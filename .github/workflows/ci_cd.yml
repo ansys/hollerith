@@ -117,7 +117,7 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
 
-      - name: Create linux wheel
+      - name: Create Linux wheel
         run: |
           pip install build
           python -m build --wheel
