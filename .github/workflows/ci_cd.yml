@@ -81,7 +81,7 @@ jobs:
 
       - name: Create wheel for CPython 3.9
         uses: pypa/cibuildwheel@v2.11.1
-         env:
+        env:
           CIBW_BUILD: "cp39-*"
           CIBW_SKIP: "*-musllinux*"
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
