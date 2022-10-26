@@ -5,6 +5,7 @@ requires = [
     "oldest-supported-numpy",
     "setuptools>=45.0",
     "wheel>=0.37.0",
+    "cibuildwheel==2.11.1",
 ]
 
 [tool.pytest.ini_options]
@@ -18,10 +19,6 @@ filterwarnings = [
     "ignore:.*numpy.ufunc size changed.*:RuntimeWarning",
     "ignore:.*Distutils was imported before Setuptools*",
 ]
-
-[tool.cibuildwheel]
-archs = ["auto64"]  # 64-bit only
-skip = "pp* *musllinux*"  # disable PyPy and musl-based wheels
 
 [tool.cibuildwheel.macos]
 # https://cibuildwheel.readthedocs.io/en/stable/faq/#apple-silicon

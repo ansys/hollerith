@@ -34,7 +34,53 @@ jobs:
         run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   main:
-    name: Build and Testing
+    name: Build package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ['3.9']
+        #['3.7', '3.8', '3.9', '3.10']
+        os: [ubuntu-latest, macos-11, windows-latest]
+        cibw_archs: ["auto"]
+        include:
+          - os: ubuntu-20.04
+            cibw_archs: "aarch64"
+
+    steps:
+      - name: Set up QEMU
+        if: matrix.cibw_archs == 'aarch64'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create wheel for CPython 3.9
+        uses: pypa/cibuildwheel@v2.11.1
+        env:
+          CIBW_BUILD: "cp39-*"
+          CIBW_SKIP: "*-musllinux* *-manylinux_i686* *-manylinux1*"
+          CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64:latest
+          CIBW_ARCHS: ${{ matrix.cibw_archs }}
+          CIBW_BEFORE_TEST: pip install -r requirements/requirements_test.txt
+          CIBW_TEST_COMMAND: pytest {package}/tests
+
+      - name: Upload wheel
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: ./wheelhouse/*.whl
+          retention-days: 7
+
+  tests:
+    name: Testing
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -42,7 +88,6 @@ jobs:
         #['3.7', '3.8', '3.9', '3.10']
         os: [ubuntu-latest]
         #, windows-latest]
-
     steps:
       - uses: actions/checkout@v3
 
@@ -59,7 +104,6 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-
       - name: Window pip cache
         uses: actions/cache@v3
         if: ${{ runner.os == 'Windows' }}
@@ -68,23 +112,20 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-
       # Docker layer caching.
       - uses: satackey/action-docker-layer-caching@v0.0.11
         if: runner.os == 'Linux'
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
 
-      - name: Create wheel
+      - name: Create Linux wheel
         run: |
           pip install build
           python -m build --wheel
-
       - name: Validate wheel
         run: |
           pip install twine
           twine check dist/*
-
       - name: Install library on Linux
         if: ${{ runner.os == 'Linux' }}
         run: pip install $(echo dist/*)
@@ -99,11 +140,20 @@ jobs:
           cd tests  # so we're testing the install, not local
           pytest -svx
 
+      - name: Build sdist
+        run: |
+          pip install build
+          python -m build -s
+
+      - name: Check metadata
+        run: |
+          pip install twine
+          twine check dist/*
+
       - name: Upload wheel
         uses: actions/upload-artifact@v3
         with:
-          name: hollerith-${{ runner.os }}-${{ matrix.python-version }}
-          path: dist/
+          path: dist/*.tar.gz
           retention-days: 7
 
   docs:
@@ -150,7 +200,7 @@ jobs:
 
   Release:
     if: contains(github.ref, 'refs/tags')
-    needs: [main, style, docs]
+    needs: [main, style, docs, tests]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -184,15 +234,15 @@ jobs:
           CLEAN: true
 
       # note how we use the PyPI tokens
-      - name: Upload to Azure PyPi (disabled)
-        run: |
-          pip install twine
-          twine upload --skip-existing ./**/*.whl
+      - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          python -m twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
 
-      - name: Release
+      - name: Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
           files: |
