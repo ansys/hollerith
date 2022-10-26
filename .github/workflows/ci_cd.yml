@@ -118,7 +118,7 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
 
-      - name: Create linux wheel
+      - name: Create Linux wheel
         run: |
           pip install build
           python -m build --wheel
@@ -200,7 +200,7 @@ jobs:
 
   Release:
     if: contains(github.ref, 'refs/tags')
-    needs: [main, style, docs, Tests]
+    needs: [main, style, docs, tests]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -242,7 +242,7 @@ jobs:
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
 
-      - name: Release to Github
+      - name: Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
           files: |
