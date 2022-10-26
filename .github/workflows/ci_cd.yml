@@ -34,7 +34,7 @@ jobs:
         run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   main:
-    name: Build package
+    name: Build package on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -47,36 +47,21 @@ jobs:
             cibw_archs: "aarch64"
 
     steps:
+
+      - name: Set up QEMU
+        if: matrix.cibw_archs == 'aarch64'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
+
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Linux pip cache
-        uses: actions/cache@v3
-        if: ${{ runner.os == 'Linux' }}
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Window pip cache
-        uses: actions/cache@v3
-        if: ${{ runner.os == 'Windows' }}
-        with:
-          path: ~\AppData\Local\pip\Cache
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      # Docker layer caching.
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        if: runner.os == 'Linux'
-        # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
 
       - name: Create wheel for CPython 3.9
         uses: pypa/cibuildwheel@v2.11.1
@@ -92,19 +77,6 @@ jobs:
           name: hollerith-${{ runner.os }}-${{ matrix.python-version }}
           path: ./wheelhouse/*.whl
           retention-days: 7
-
-      - name: Build sdist
-        run: python -m build -s
-
-      - name: Check metadata
-        run: twine check dist/*
-
-      - name: Upload wheel
-        uses: actions/upload-artifact@v3
-        with:
-          path: dist/*.tar.gz
-          retention-days: 7
-
 
   tests:
     name: Testing
@@ -166,6 +138,23 @@ jobs:
           pip install -r requirements/requirements_test.txt
           cd tests  # so we're testing the install, not local
           pytest -svx
+
+
+      - name: Build sdist
+        run: |
+        pip install build
+        python -m build -s
+
+      - name: Check metadata
+        run: |
+          pip install twine
+          twine check dist/*
+
+      - name: Upload wheel
+        uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+          retention-days: 7
 
   docs:
     name: Build Documentation
