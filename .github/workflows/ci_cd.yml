@@ -61,6 +61,32 @@ jobs:
           cibw-skip: "*-musllinux* *-manylinux_i686* *-manylinux1*"
           cibw-archs: ${{ matrix.cibw_archs }}
 
+  macos-build:
+    name: Build package on ${{ matrix.os }}
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cibw_archs: ["auto"]
+        cfg:
+          - {python-version: "3.8", cibw-build: "cp38-*"}
+          - {python-version: "3.9", cibw-build: "cp39-*"}
+          - {python-version: "3.10", cibw-build: "cp310-*"}
+
+      steps:
+      - name: Setup Python ${{ matrix.cfg.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.cfg.python-version }}
+
+      - name: Create wheel for CPython 3.9
+        uses: pyansys/actions/ci-build-wheel@main
+        with:
+          cibw-build: ${{ matrix.cfg.cibw-build }}
+          cibw-skip: "*-musllinux* *-manylinux_i686* *-manylinux1*"
+          cibw-archs: ${{ matrix.cibw_archs }}
+
   tests:
     name: Testing
     runs-on: ${{ matrix.os }}
