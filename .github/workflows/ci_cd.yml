@@ -237,9 +237,10 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          BRANCH: gh-pages
-          FOLDER: ~/html
-          CLEAN: true
+          branch: gh-pages
+          folder: Documentation-html
+          clean: true
+          single-commit: true
 
       # note how we use the PyPI tokens
       - name: Publish to PyPI
@@ -251,6 +252,12 @@ jobs:
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
 
+      - name: Zip HTML Documentation
+        uses: vimtor/action-zip@v1
+        with:
+          files: Documentation-html
+          dest: hollerith-Documentation-HTML.zip
+      
       - name: Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
