@@ -48,7 +48,7 @@ jobs:
           - os: ubuntu-latest
             cibw_archs: "aarch64"
     steps:
-      - name: Create wheel for CPython 3.9
+      - name: Create wheel for CPython ${{ matrix.cfg.python-version }} 
         uses: pyansys/actions/build-ci-wheels@main
         with:
           python-version: ${{ matrix.cfg.python-version }}
@@ -79,6 +79,7 @@ jobs:
 
   tests:
     name: Testing
+    needs: [main, style]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
