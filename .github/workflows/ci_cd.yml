@@ -49,7 +49,7 @@ jobs:
             cibw_archs: "aarch64"
     steps:
       - name: Create wheel for CPython 3.9
-        uses: pyansys/actions/ci-build-wheel@main
+        uses: pyansys/actions/build-ci-wheels@main
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -70,7 +70,7 @@ jobs:
           - {python-version: "3.10", cibw-build: "cp310-*"}
     steps:
       - name: Create wheel for CPython 3.9
-        uses: pyansys/actions/ci-build-wheel@main
+        uses: pyansys/actions/build-ci-wheels@main
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
