@@ -38,54 +38,55 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.9']
-        #['3.7', '3.8', '3.9', '3.10']
-        os: [ubuntu-latest, macos-11, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         cibw_archs: ["auto"]
+        cfg:
+          - {python-version: '3.8', cibw-build: 'cp38-*'}
+          - {python-version: '3.9', cibw-build: 'cp39-*'}
+          - {python-version: '3.10', cibw-build: 'cp310-*'}
+          - {python-version: '3.11', cibw-build: 'cp311-*'}       
+    steps:
+      - name: Create wheel for CPython ${{ matrix.cfg.python-version }} 
+        uses: pyansys/actions/build-ci-wheels@main
+        with:
+          python-version: ${{ matrix.cfg.python-version }}
+          cibw-build: ${{ matrix.cfg.cibw-build }}
+          cibw-skip: "*-musllinux* *-manylinux_i686* *-manylinux1*"
+          cibw-archs: ${{ matrix.cibw_archs }}
+
+  macos-build:
+    name: Build package on ${{ matrix.os }}
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cibw_archs: ["auto"]
+        cfg:
+          - {python-version: "3.8", cibw-build: "cp38-*"}
+          - {python-version: "3.9", cibw-build: 'cp39-*'}
+          - {python-version: "3.10", cibw-build: 'cp310-*'}
+          - {python-version: '3.11', cibw-build: 'cp311-*'}
+        # Building aarch64 wheel only for release as it requires qemu.
         include:
           - os: ubuntu-20.04
-            cibw_archs: "aarch64"
-
+            cibw_archs: "aarch64" 
     steps:
-      - name: Set up QEMU
-        if: matrix.cibw_archs == 'aarch64'
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: arm64
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
       - name: Create wheel for CPython 3.9
-        uses: pypa/cibuildwheel@v2.11.1
-        env:
-          CIBW_BUILD: "cp39-*"
-          CIBW_SKIP: "*-musllinux* *-manylinux_i686* *-manylinux1*"
-          CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64:latest
-          CIBW_ARCHS: ${{ matrix.cibw_archs }}
-          CIBW_BEFORE_TEST: pip install -r requirements/requirements_test.txt
-          CIBW_TEST_COMMAND: pytest {package}/tests
-
-      - name: Upload wheel
-        uses: actions/upload-artifact@v3
+        uses: pyansys/actions/build-ci-wheels@main
         with:
-          name: wheels
-          path: ./wheelhouse/*.whl
-          retention-days: 7
+          python-version: ${{ matrix.cfg.python-version }}
+          cibw-build: ${{ matrix.cfg.cibw-build }}
+          cibw-skip: "*-musllinux* *-manylinux_i686* *-manylinux1*"
+          cibw-archs: ${{ matrix.cibw_archs }}
 
   tests:
     name: Testing
+    needs: [main, style]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8']
-        #['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
         os: [ubuntu-latest]
         #, windows-latest]
     steps:
@@ -126,6 +127,7 @@ jobs:
         run: |
           pip install twine
           twine check dist/*
+
       - name: Install library on Linux
         if: ${{ runner.os == 'Linux' }}
         run: pip install $(echo dist/*)
@@ -229,9 +231,10 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          BRANCH: gh-pages
-          FOLDER: ~/html
-          CLEAN: true
+          branch: gh-pages
+          folder: Documentation-html
+          clean: true
+          single-commit: true
 
       # note how we use the PyPI tokens
       - name: Publish to PyPI
@@ -243,6 +246,12 @@ jobs:
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
 
+      - name: Zip HTML Documentation
+        uses: vimtor/action-zip@v1
+        with:
+          files: Documentation-html
+          dest: hollerith-Documentation-HTML.zip
+      
       - name: Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
@@ -250,3 +259,4 @@ jobs:
             ./**/*.whl
             ./**/*.zip
             ./**/*.pdf
+            ./**/*.tar.gz
