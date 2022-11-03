@@ -41,11 +41,12 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         cibw_archs: ["auto"]
         cfg:
-          - {python-version: "3.9", cibw-build: 'cp39-*'}
-          - {python-version: "3.10", cibw-build: 'cp310-*'}
+          - {python-version: '3.8', cibw-build: 'cp38-*'}
+          - {python-version: '3.9', cibw-build: 'cp39-*'}
+          - {python-version: '3.10', cibw-build: 'cp310-*'}
         include:
           - os: ubuntu-latest
-            cibw_archs: "aarch64"
+            cibw_archs: 'aarch64'
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }} 
         uses: pyansys/actions/build-ci-wheels@main
@@ -64,6 +65,7 @@ jobs:
       matrix:
         cibw_archs: ["auto"]
         cfg:
+          - {python-version: "3.8", cibw-build: "cp38-*"}
           - {python-version: "3.9", cibw-build: 'cp39-*'}
           - {python-version: "3.10", cibw-build: 'cp310-*'}
     steps:
