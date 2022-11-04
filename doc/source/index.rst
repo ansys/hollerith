@@ -13,12 +13,11 @@
 
 
 Code Examples
-~~~~~~~~~~~~~
+-------------
 Here's a quick preview for how Python code looks using ``hollerith``.
 
-
 Rendered Python Code
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -34,5 +33,5 @@ Rendered Python Code
    '    1.2099      2803                   0'
 
 API Reference
-~~~~~~~~~~~~~
+-------------
 To see a full API reference, see :ref:`ref_api_reference`
