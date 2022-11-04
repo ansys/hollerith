@@ -12,7 +12,7 @@ on:
 
 jobs:
   style:
-    name: Pre-commit Check
+    name: Code style
     runs-on: ubuntu-latest
 
     steps:
@@ -20,20 +20,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Install pre-commit
-        run: |
-          sudo apt-get -y update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
-          pip install pre-commit
+        run: pip install pre-commit
 
-      - uses: actions/checkout@v3
       - name: Run pre-commit
         run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
-  main:
+  build:
     name: Build package on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -55,7 +50,7 @@ jobs:
           cibw-archs: ${{ matrix.cibw_archs }}
 
   macos-build:
-    name: Build package on ${{ matrix.os }}
+    name: Build package on macos-latest
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     runs-on: macos-latest
     strategy:
@@ -66,13 +61,9 @@ jobs:
           - {python-version: "3.8", cibw-build: "cp38-*"}
           - {python-version: "3.9", cibw-build: 'cp39-*'}
           - {python-version: "3.10", cibw-build: 'cp310-*'}
-          - {python-version: '3.11', cibw-build: 'cp311-*'}
-        # Building aarch64 wheel only for release as it requires qemu.
-        include:
-          - os: ubuntu-20.04
-            cibw_archs: "aarch64" 
+          - {python-version: '3.11', cibw-build: 'cp311-*'} 
     steps:
-      - name: Create wheel for CPython 3.9
+      - name: Create wheel for CPython ${{ matrix.cfg.python-version }} 
         uses: pyansys/actions/build-ci-wheels@main
         with:
           python-version: ${{ matrix.cfg.python-version }}
@@ -82,18 +73,17 @@ jobs:
 
   tests:
     name: Testing
-    needs: [main, style]
+    needs: [build, style]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-        os: [ubuntu-latest]
-        #, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -113,6 +103,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+
       # Docker layer caching.
       - uses: satackey/action-docker-layer-caching@v0.0.11
         if: runner.os == 'Linux'
@@ -123,6 +114,7 @@ jobs:
         run: |
           pip install build
           python -m build --wheel
+
       - name: Validate wheel
         run: |
           pip install twine
@@ -167,13 +159,10 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Install library
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install python3-pip
-          pip install -e .
+        run: pip install .
 
       - name: Build HTML
         run: |
@@ -183,58 +172,47 @@ jobs:
       - name: Build PDF Documentation
         run: |
           sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -qy texlive-latex-extra latexmk
-          make -C doc latexpdf
+          sudo apt-get install -qy texlive-latex-extra latexmk
+          make -C doc pdf
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Documentation-html
           path: doc/build/html
           retention-days: 7
 
       - name: Upload PDF Documentation
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Documentation-pdf
-          path: doc/build/latex/*.pdf
+          path: doc/build/latex/hollerith*.pdf
           retention-days: 7
 
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: doc/build/html
+          CLEAN: true
+          SINGLE_COMMIT: true
+
   Release:
-    if: contains(github.ref, 'refs/tags')
-    needs: [main, style, docs, tests]
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    needs: [style, build, macos-build, docs, tests]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
-      - uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
       
       - name: List directory structure
         run: ls -R
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: Documentation-pdf
-          path: ~/latex
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: Documentation-html
-          path: ~/html
-
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.5
-        with:
-          branch: gh-pages
-          folder: Documentation-html
-          clean: true
-          single-commit: true
 
       # note how we use the PyPI tokens
       - name: Publish to PyPI
@@ -242,7 +220,7 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
-          pip install twine
+          python -m pip install --upgrade pip twine
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
 
@@ -258,5 +236,5 @@ jobs:
           files: |
             ./**/*.whl
             ./**/*.zip
-            ./**/*.pdf
+            ./**/hollerith*.pdf
             ./**/*.tar.gz
