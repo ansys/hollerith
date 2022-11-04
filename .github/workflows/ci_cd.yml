@@ -162,7 +162,7 @@ jobs:
           python-version: 3.9
 
       - name: Install library
-        run: pip install -e .
+        run: pip install .
 
       - name: Build HTML
         run: |
