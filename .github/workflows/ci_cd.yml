@@ -73,7 +73,7 @@ jobs:
 
   tests:
     name: Testing
-    needs: [main, style]
+    needs: [build, style]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
