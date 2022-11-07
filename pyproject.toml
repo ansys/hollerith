@@ -27,3 +27,4 @@ test-skip = ["*_arm64", "*_universal2:arm64"]
 
 [project.urls]
 Source = "https://github.com/pyansys/hollerith"
+documentation = "https://hollerith.docs.pyansys.com/"
