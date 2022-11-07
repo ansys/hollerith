@@ -31,7 +31,7 @@ Include a link to the full sphinx documentation.  For example `PyAnsys <https://
 
 Usage
 -----
-It's best to provide a sample code or even a figure demonstrating the usage of your library.  For example:
+Example:
 
 .. code:: python
 
