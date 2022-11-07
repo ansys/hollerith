@@ -28,6 +28,10 @@ setup(
     package_dir={"hollerith": "src"},
     version=__version__,
     description="C-extension module for efficient writing of fixed width text",
+    project_urls={
+        "Documentation": "https://hollerith.docs.pyansys.com/",
+        "Source Code": "https://github.com/pyansys/hollerith",
+    },
     long_description=long_description,
     license="MIT",
     classifiers=[

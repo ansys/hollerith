@@ -85,7 +85,7 @@ documentation provides information on API reference.
 
 Usage
 -----
-It's best to provide a sample code or even a figure demonstrating the usage of your library.  For example:
+Example:
 
 .. code:: python
 
