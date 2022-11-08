@@ -193,15 +193,6 @@ jobs:
           path: doc/build/latex/hollerith*.pdf
           retention-days: 7
 
-      - name: Deploy documentation to gh pages
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
-        with:
-          BRANCH: gh-pages
-          FOLDER: Documentation-html
-          CLEAN: true
-          SINGLE_COMMIT: true
-
   Release:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     needs: [style, build, macos-build, docs, tests]
@@ -233,6 +224,14 @@ jobs:
         with:
           files: Documentation-html
           dest: hollerith-Documentation-HTML.zip
+
+      - name: Deploy documentation to gh pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          BRANCH: gh-pages
+          FOLDER: Documentation-html
+          CLEAN: true
+          SINGLE_COMMIT: true
       
       - name: Release to GitHub
         uses: softprops/action-gh-release@v1
