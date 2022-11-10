@@ -31,7 +31,8 @@ setup(
     url="https://github.com/pyansys/hollerith/",
     project_urls={
         "Documentation": "https://hollerith.docs.pyansys.com/",
-        "Source Code": "https://github.com/pyansys/hollerith/",
+        "Source": "https://github.com/pyansys/hollerith/",
+        "Tracker": "https://github.com/pyansys/hollerith/issues",
     },
     long_description=long_description,
     license="MIT",
