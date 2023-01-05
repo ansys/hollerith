@@ -87,7 +87,7 @@ Usage
 -----
 Example:
 
-.. code:: python
+.. code-block:: pycon
 
    >>> import io
    >>> import hollerith as holler
