@@ -26,14 +26,14 @@ cdef extern from 'writer.h':
     int write_string_value(object write, object check_null, object value, int width)
     int write_null_value(object write, int width)
 
-cdef throw_write_error(code: int):
+cdef throw_write_error(int code):
     if code == 1:
         return
     # TODO - raise the error in C?
     #      - or return an error code with a more useful message?
     raise Exception(f"error in hollerith: {code}")
 
-cpdef write_float_to_buffer(buffer, value: float, width: int):
+cpdef write_float_to_buffer(buffer, double value, int width):
     """Writes a string representing the float ``value`` to ``buffer`` within the given ``width``, right justified.
 
         Parameters
@@ -60,7 +60,7 @@ cpdef write_float_to_buffer(buffer, value: float, width: int):
     output: int = write_float_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-cpdef write_int_to_buffer(buffer, value: int, width: int):
+cpdef write_int_to_buffer(buffer, int value, int width):
     """Writes a string representing the int ``value`` to ``buffer`` within the given ``width``, right justified.
 
         Parameters
@@ -87,7 +87,7 @@ cpdef write_int_to_buffer(buffer, value: int, width: int):
     output: int = write_int_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-cpdef write_string_to_buffer(buffer, value: str, width: int):
+cpdef write_string_to_buffer(buffer, str value, int width):
     """Writes a string representing the string ``value`` to ``buffer`` within the given ``width``, left justified.
 
         Parameters
@@ -114,7 +114,7 @@ cpdef write_string_to_buffer(buffer, value: str, width: int):
     output: int = write_string_value(buffer.write, checknull, value, width)
     throw_write_error(output)
 
-cpdef write_null_to_buffer(buffer, width: int):
+cpdef write_null_to_buffer(buffer, int width):
     """Writes ``width`` space characters to ``buffer``
 
         Parameters
@@ -202,7 +202,7 @@ cdef write_row(write, spec: s_fields, np.ndarray[object, ndim=1] row_arr):
 
         throw_write_error(write_output)
 
-cpdef write_numpy_table(buffer, spec: typing.List, numrows: int, np.ndarray[object, ndim=2] arr):
+cpdef write_numpy_table(buffer, spec: typing.List, int numrows, np.ndarray[object, ndim=2] arr):
     """
         Write 2d numpy array to buffer with fixed width columns
 
