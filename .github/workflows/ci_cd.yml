@@ -47,7 +47,7 @@ jobs:
           - {python-version: '3.12', cibw-build: 'cp312-*'}
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: pyansys/actions/build-ci-wheels@fix/ci-wheels
+        uses: ansys/actions/build-ci-wheels@fix/ci-wheels
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -70,7 +70,7 @@ jobs:
           - {python-version: '3.12', cibw-build: 'cp312-*'}
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: anssy/actions/build-ci-wheels@fix/ci-wheels
+        uses: ansys/actions/build-ci-wheels@fix/ci-wheels
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
