@@ -19,7 +19,7 @@ Here's a quick preview for how Python code looks using ``hollerith``.
 Rendered Python Code
 ^^^^^^^^^^^^^^^^^^^^
 
-.. code:: python
+.. code:: pycon
 
 
    >>> import io

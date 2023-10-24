@@ -267,7 +267,7 @@
 <span id="ref-write-reference"></span><h1>write<a class="headerlink" href="#write" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="hollerith._writer.write_int_to_buffer">
-<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_int_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_int_to_buffer" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_int_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_int_to_buffer" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a string representing the int <code class="docutils literal notranslate"><span class="pre">value</span></code> to <code class="docutils literal notranslate"><span class="pre">buffer</span></code> within the given <code class="docutils literal notranslate"><span class="pre">width</span></code>, right justified.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -276,9 +276,9 @@
 requirement is that it must contain a write attribute that is callable with a single
 string argument.</p>
 </dd>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Integer to write. This could also be a numpy.int32</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Integer to write. This could also be a numpy.int32</p>
 </dd>
-<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
+<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
 </dd>
 </dl>
 </dd>
@@ -296,7 +296,7 @@ string argument.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hollerith._writer.write_float_to_buffer">
-<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_float_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">double</span> <span class="pre">value:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_float_to_buffer" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_float_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">double</span> <span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_float_to_buffer" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a string representing the float <code class="docutils literal notranslate"><span class="pre">value</span></code> to <code class="docutils literal notranslate"><span class="pre">buffer</span></code> within the given <code class="docutils literal notranslate"><span class="pre">width</span></code>, right justified.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -305,9 +305,9 @@ string argument.</p>
 requirement is that it must contain a write attribute that is callable with a single
 string argument.</p>
 </dd>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Float to write.</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Float to write.</p>
 </dd>
-<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
+<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
 </dd>
 </dl>
 </dd>
@@ -325,7 +325,7 @@ string argument.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hollerith._writer.write_string_to_buffer">
-<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_string_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unicode</span> <span class="pre">value:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_string_to_buffer" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_string_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unicode</span> <span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_string_to_buffer" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a string representing the string <code class="docutils literal notranslate"><span class="pre">value</span></code> to <code class="docutils literal notranslate"><span class="pre">buffer</span></code> within the given <code class="docutils literal notranslate"><span class="pre">width</span></code>, left justified.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -334,9 +334,9 @@ string argument.</p>
 requirement is that it must contain a write attribute that is callable with a single
 string argument.</p>
 </dd>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>String to write.</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>String to write.</p>
 </dd>
-<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
+<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of characters to write</p>
 </dd>
 </dl>
 </dd>
@@ -354,7 +354,7 @@ string argument.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hollerith._writer.write_null_to_buffer">
-<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_null_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_null_to_buffer" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">hollerith._writer.</span></span><span class="sig-name descname"><span class="pre">write_null_to_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith._writer.write_null_to_buffer" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes <code class="docutils literal notranslate"><span class="pre">width</span></code> space characters to <code class="docutils literal notranslate"><span class="pre">buffer</span></code></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -363,7 +363,7 @@ string argument.</p>
 requirement is that it must contain a write attribute that is callable with a single
 string argument.</p>
 </dd>
-<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of spaces to write</p>
+<dt><strong>width</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of spaces to write</p>
 </dd>
 </dl>
 </dd>
@@ -381,7 +381,7 @@ string argument.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hollerith.write_table">
-<span class="sig-prename descclassname"><span class="pre">hollerith.</span></span><span class="sig-name descname"><span class="pre">write_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">numrows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="field.html#hollerith.Field" title="hollerith.field.Field"><span class="pre">Field</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith.write_table" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">hollerith.</span></span><span class="sig-name descname"><span class="pre">write_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">numrows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="field.html#hollerith.Field" title="hollerith.field.Field"><span class="pre">Field</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hollerith.write_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Write table to buffer with fixed width columns</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -390,9 +390,9 @@ string argument.</p>
 requirement is that it must contain a write attribute that is callable with a single
 string argument.</p>
 </dd>
-<dt><strong>table</strong><span class="classifier"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt><dd><p>Table to write.</p>
+<dt><strong>table</strong><span class="classifier"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt><dd><p>Table to write.</p>
 </dd>
-<dt><strong>numrows</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of rows to write. This might be larger than the length of <cite>table</cite>.
+<dt><strong>numrows</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of rows to write. This might be larger than the length of <cite>table</cite>.
 If so, append with empty lines with the right size.</p>
 </dd>
 <dt><strong>spec</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="field.html#hollerith.Field" title="hollerith.Field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hollerith.Field</span></code></a>]</span></dt><dd><p>Specification of the table. Must be the same length as the number of columns in <cite>table</cite>.</p>
@@ -443,7 +443,7 @@ would be to expose Cython-level methods in <cite>_writer</cite>.</p>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright (c) 2022 ANSYS, Inc. All rights reserved.<br>
+    &copy; Copyright (c) 2023 ANSYS, Inc. All rights reserved.<br>
 </p>
   </div>
   
