@@ -14,8 +14,8 @@ Hollerith
    :target: https://pypi.org/project/hollerith
    :alt: PyPI
 
-.. |GH-CI| image:: https://github.com/pyansys/hollerith/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/pyansys/hollerith/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys/hollerith/actions/workflows/ci_cd.yml/badge.svg
+   :target: https://github.com/ansys/hollerith/actions/workflows/ci_cd.yml
    :alt: GH-CI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -72,7 +72,7 @@ Install in offline mode
 
 If you lack an internet connection on your installation machine,
 you should install hollerith by downloading the wheelhouse
-archive from the `Releases Page <https://github.com/pyansys/hollerith/releases>`_ for your
+archive from the `Releases Page <https://github.com/ansys/hollerith/releases>`_ for your
 corresponding machine architecture.
 
 Each wheelhouse archive contains all the Python wheels necessary to install hollerith from scratch on Windows,
