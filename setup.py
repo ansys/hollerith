@@ -44,11 +44,11 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX",
         "Operating System :: MacOS",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     include_dirs=[os.path.join(numpy.get_include())],
     ext_modules=[
@@ -62,6 +62,6 @@ setup(
             language="c",
         ),
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=["numpy>=1.16.0", "pandas>=1.3.2"],
 )
