@@ -46,13 +46,27 @@ jobs:
           - {python-version: '3.11', cibw-build: 'cp311-*'}
           - {python-version: '3.12', cibw-build: 'cp312-*'}
     steps:
-      - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ansys/actions/build-ci-wheels@v4
+      - name: "Install Git and clone project"
+        uses: actions/checkout@v4
+
+      - name: "Set up QEMU"
+        if: ${{ matrix.cibw-archs == 'aarch64' }}
+        uses: docker/setup-qemu-action@v2
         with:
-          python-version: ${{ matrix.cfg.python-version }}
-          cibw-build: ${{ matrix.cfg.cibw-build }}
-          cibw-skip: "*-musllinux* *-manylinux_i686* *-manylinux1*"
-          cibw-archs: ${{ matrix.cibw_archs }}
+          platforms: arm64
+      - name: "Build wheels for CPython ${{matrix.python-version }}"
+        uses: pypa/cibuildwheel@v2.19.2
+        env:
+          CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
+          CIBW_ARCHS: ${{ matrix.cibw-archs }}
+      - name: "Upload wheel"
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels
+          path: ./wheelhouse/*.whl
+          retention-days: 7
 
   macos-build:
     name: Build package on macos-latest
