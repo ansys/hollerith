@@ -24,3 +24,6 @@ filterwarnings = [
 # https://cibuildwheel.readthedocs.io/en/stable/faq/#apple-silicon
 archs = ["x86_64", "universal2"]
 test-skip = ["*_arm64", "*_universal2:arm64"]
+
+[tool.cibuildwheel]
+skip = ["*-musllinux*", "*-manylinux_i686*", "*-manylinux1*"]
