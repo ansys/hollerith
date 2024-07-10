@@ -6,7 +6,7 @@ from sphinx.builders.latex import LaTeXBuilder
 LaTeXBuilder.supported_image_types = ["image/png", "image/pdf", "image/svg+xml"]
 
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
-from hollerith._version import __version__
+from hollerith import __version__
 
 # Project information
 project = "hollerith"
