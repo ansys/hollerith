@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wheels
-          path: ./wheelhouse/*.whl
+          path: ./*.whl
           retention-days: 7
 
   macos-build:
