@@ -18,6 +18,7 @@ filterwarnings = [
     "ignore:.*numpy.dtype size changed.*:RuntimeWarning",
     "ignore:.*numpy.ufunc size changed.*:RuntimeWarning",
     "ignore:.*Distutils was imported before Setuptools*",
+    "ignore:.*numpy.ndarray size changed*",
 ]
 
 [tool.cibuildwheel.macos]
