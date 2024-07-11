@@ -66,13 +66,13 @@ jobs:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
 
       - name: "List directory structure"
-        run: ls -R
+        run: ls -R wheelhouse
 
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
           name: wheels-${{ matrix.os }}-${{ matrix.python-version }}
-          path: ./*.whl
+          path: wheelhouse
           retention-days: 7
 
   macos-build:
@@ -97,7 +97,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - name: "Build wheels for CPython ${{matrix.python-version }}"
+      - name: "Build wheels for CPython ${{ matrix.python-version }}"
         uses: pypa/cibuildwheel@v2.19.2
         env:
           CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
@@ -105,11 +105,14 @@ jobs:
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
 
+      - name: "List directory structure"
+        run: ls -R wheelhouse
+  
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
-          path: ./*.whl
+          name: wheels-macos-latest-${{ matrix.python-version }}
+          path: wheelhouse
           retention-days: 7
 
   tests:
