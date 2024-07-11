@@ -16,25 +16,19 @@ concurrency:
 
 # Define the environment
 env:
-  PYTHON_VERSION: 3.11
+  MAIN_PYTHON_VERSION: 3.11
 
 jobs:
-  style:
-    name: Code style
+  code-style:
+    name: "Code style"
     runs-on: ubuntu-latest
-
+    needs: commit-and-branch-style
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: "Run code style checks"
+        uses: ansys/actions/code-style@mv6
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install pre-commit
-        run: pip install pre-commit
-
-      - name: Run pre-commit
-        run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-python-cache: false
 
   build:
     name: Build package on ${{ matrix.os }}
@@ -70,31 +64,12 @@ jobs:
           - {python-version: '3.11', cibw-build: 'cp311-*'}
           - {python-version: '3.12', cibw-build: 'cp312-*'}
     steps:
-      - name: "Install Git and clone project"
-        uses: actions/checkout@v4
-
-      - name: "Set up QEMU"
-        if: ${{ matrix.cibw-archs == 'aarch64' }}
-        uses: docker/setup-qemu-action@v2
+      - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
+        uses: ansys/actions/build-ci-wheels@fix/update-build
         with:
-          platforms: arm64
-      - name: "Build wheels for CPython ${{ matrix.cfg.python-version }}"
-        uses: pypa/cibuildwheel@v2.19.2
-        env:
-          CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
-          CIBW_ARCHS: ${{ matrix.cibw_archs }}
-
-      - name: "List directory structure"
-        run: ls -R wheelhouse
-  
-      - name: "Upload wheel"
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-macos-latest-${{ matrix.cfg.python-version }}
-          path: wheelhouse
-          retention-days: 7
+          python-version: ${{ matrix.cfg.python-version }}
+          cibw-build: ${{ matrix.cfg.cibw-build }}
+          cibw-archs: ${{ matrix.cibw_archs }}
 
   tests:
     name: Testing
@@ -171,7 +146,7 @@ jobs:
 
       - name: Upload wheel
         uses: actions/upload-artifact@v4
-        if: ${{ runner.os == 'Linux' && env.PYTHON_VERSION == matrix.python-version }}
+        if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version }}
         with:
           path: dist/*.tar.gz
           retention-days: 7
@@ -185,7 +160,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Install library
         run: python -m pip install .
