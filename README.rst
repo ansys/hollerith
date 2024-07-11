@@ -102,4 +102,5 @@ Example:
 License
 -------
 ``hollerith`` is licensed under the MIT license.
-The full license can be found in the root directory of the repository, see `<LICENSE>`_.
+The full license can be found in the root directory of the repository, 
+see `License <https://github.com/ansys/hollerith/blob/main/LICENSE>`_.
