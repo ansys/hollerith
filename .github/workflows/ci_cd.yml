@@ -189,7 +189,7 @@ jobs:
           twine check dist/*
 
       - name: Upload wheel
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
           retention-days: 7
@@ -220,14 +220,14 @@ jobs:
           make -C doc pdf
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: documentation-html
           path: doc/build/html
           retention-days: 7
 
       - name: Upload PDF Documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Documentation-pdf
           path: doc/build/latex/hollerith*.pdf
@@ -244,7 +244,7 @@ jobs:
           python-version: 3.9
 
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
 
       - name: List directory structure
         run: ls -R

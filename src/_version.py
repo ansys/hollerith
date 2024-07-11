@@ -1,6 +1,6 @@
 """Version of hollerith module.
 
-On the ``master`` branch, use 'dev0' to denote a development version.
+On the ``main`` branch, use 'dev0' to denote a development version.
 For example:
 
 version_info = 0, 4, 'dev0'
