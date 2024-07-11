@@ -57,7 +57,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - name: "Build wheels for CPython ${{matrix.python-version }}"
+      - name: "Build wheels for CPython ${{ matrix.python-version }}"
         uses: pypa/cibuildwheel@v2.19.2
         env:
           CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
@@ -65,6 +65,14 @@ jobs:
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
 
+      - name: "List directory structure"
+        if: ${{ runner.os == 'ubuntu-latest' }}
+        run: ls -R
+  
+      - name: "List directory structure"
+        if: ${{ runner.os == 'windows-latest' }}
+        run: dir /s
+  
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
@@ -101,14 +109,6 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
-
-      - name: "List directory structure"
-        if: ${{ runner.os == 'ubuntu-latest' }}
-        run: ls -R
-
-      - name: "List directory structure"
-        if: ${{ runner.os == 'windows-latest' }}
-        run: dir /s
 
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
