@@ -68,7 +68,7 @@ jobs:
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheels-${{ matrix.os }}-${{ matrix.python-version }}
           path: ./*.whl
           retention-days: 7
 
@@ -101,6 +101,14 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
+
+      - name: "List directory structure"
+        if: ${{ runner.os == 'ubuntu-latest' }}
+        run: ls -R
+
+      - name: "List directory structure"
+        if: ${{ runner.os == 'windows-latest' }}
+        run: dir /s
 
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
@@ -216,7 +224,7 @@ jobs:
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
-          name: Documentation-html
+          name: documentation-html
           path: doc/build/html
           retention-days: 7
 
@@ -256,16 +264,16 @@ jobs:
       - name: Zip HTML Documentation
         uses: vimtor/action-zip@v1
         with:
-          files: Documentation-html
-          dest: hollerith-Documentation-HTML.zip
+          files: documentation-html
+          dest: hollerith-documentation-html.zip
 
       - name: Deploy documentation to gh pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          BRANCH: gh-pages
-          FOLDER: Documentation-html
-          CLEAN: true
-          SINGLE_COMMIT: true
+          branch: gh-pages
+          folder: documentation-html
+          clean: true
+          single-commit: true
 
       - name: Release to GitHub
         uses: softprops/action-gh-release@v1
