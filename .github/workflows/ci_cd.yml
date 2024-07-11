@@ -57,7 +57,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - name: "Build wheels for CPython ${{ matrix.python-version }}"
+      - name: "Build wheels for CPython ${{ matrix.cfg.python-version }}"
         uses: pypa/cibuildwheel@v2.19.2
         env:
           CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
@@ -71,7 +71,7 @@ jobs:
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          name: wheels-${{ matrix.os }}-${{ matrix.cfg.python-version }}
           path: wheelhouse
           retention-days: 7
 
@@ -97,7 +97,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - name: "Build wheels for CPython ${{ matrix.python-version }}"
+      - name: "Build wheels for CPython ${{ matrix.cfg.python-version }}"
         uses: pypa/cibuildwheel@v2.19.2
         env:
           CIBW_BUILD: ${{ matrix.cfg.cibw-build }}
@@ -111,7 +111,7 @@ jobs:
       - name: "Upload wheel"
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-latest-${{ matrix.python-version }}
+          name: wheels-macos-latest-${{ matrix.cfg.python-version }}
           path: wheelhouse
           retention-days: 7
 
