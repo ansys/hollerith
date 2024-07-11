@@ -190,6 +190,7 @@ jobs:
 
       - name: Upload wheel
         uses: actions/upload-artifact@v4
+        if: ${{ runner.os == 'Linux' }} and ${{ env.PYTHON_VERSION == matrix.python-version }}
         with:
           path: dist/*.tar.gz
           retention-days: 7
