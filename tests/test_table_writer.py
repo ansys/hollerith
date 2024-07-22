@@ -113,3 +113,21 @@ def test_table_3():
  2000001   -2772.1652832     643.8095703     376.7990417                
  2000002   -3093.8891602     685.0078125     811.2246704       1       5"""
     )
+
+
+def test_table_4():
+    spec = [
+        holler.Field(int, width=8),
+        holler.Field(float, width=16),
+        holler.Field(float, width=16),
+        holler.Field(float, width=16),
+        holler.Field(int, width=8),
+        holler.Field(int, width=8)
+    ]
+
+    value = pd.DataFrame({"nid": [69000001], "x": [0.], "y": [1.], "z": [1.], "tc": [1], "rc": [1]})
+    result = _write_table(value, spec, 1)
+    assert (
+        result
+        == "69000001             0.0             1.0             1.0       1       1"
+    )
