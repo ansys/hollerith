@@ -122,12 +122,11 @@ def test_table_4():
         holler.Field(float, width=16),
         holler.Field(float, width=16),
         holler.Field(int, width=8),
-        holler.Field(int, width=8)
+        holler.Field(int, width=8),
     ]
 
-    value = pd.DataFrame({"nid": [69000001], "x": [0.], "y": [1.], "z": [1.], "tc": [1], "rc": [1]})
-    result = _write_table(value, spec, 1)
-    assert (
-        result
-        == "69000001             0.0             1.0             1.0       1       1"
+    value = pd.DataFrame(
+        {"nid": [69000001], "x": [0.0], "y": [1.0], "z": [1.0], "tc": [1], "rc": [1]}
     )
+    result = _write_table(value, spec, 1)
+    assert result == "69000001             0.0             1.0             1.0       1       1"
