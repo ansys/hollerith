@@ -32,7 +32,7 @@ static PyObject* size_t_to_string(Py_ssize_t i, int width) {
   memset(output_buffer, 0, 20);
   static char int_buffer[21];
   memset(int_buffer, 0, 21);
-  snprintf(int_buffer, width, "%d", i);
+  snprintf(int_buffer, width+1, "%lld", i);
   int int_buffer_len = (int)strlen(int_buffer);
   right_justify(output_buffer, width, int_buffer, int_buffer_len);
   return PyUnicode_FromStringAndSize(output_buffer, width);
