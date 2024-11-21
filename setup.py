@@ -44,8 +44,6 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX",
         "Operating System :: MacOS",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -63,5 +61,5 @@ setup(
         ),
     ],
     python_requires=">=3.9",
-    install_requires=["numpy>=2.0.0", "pandas>=2.0.3"],
+    install_requires=["numpy>=1.26.4", "pandas>=2.0.3"],
 )
