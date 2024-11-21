@@ -64,6 +64,7 @@ jobs:
       matrix:
         python-version: ['3.10', '3.11', '3.12']
         os: [ubuntu-latest, windows-latest]
+        numpy-version: ['1.26.4', 'latest']
     steps:
       - uses: actions/checkout@v3
 
@@ -77,15 +78,16 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}-numpy-${{ matrix.numpy-version }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+
       - name: Window pip cache
         uses: actions/cache@v3
         if: ${{ runner.os == 'Windows' }}
         with:
           path: ~\AppData\Local\pip\Cache
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}-numpy-${{ matrix.numpy-version }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
@@ -113,6 +115,14 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: pip install (get-item .\dist\*.whl)
 
+      - name: Install Numpy old version
+        if: ${{ matrix.numpy-version != 'latest' }}
+        run: pip install numpy==${{ matrix.numpy-version }}
+
+      - name: Install Numpy latest version
+        if: ${{ matrix.numpy-version == 'latest' }}
+        run: pip install numpy --upgrade --force-reinstall
+
       - name: Unit testing
         run: |
           pip install -r requirements/requirements_test.txt
@@ -131,7 +141,7 @@ jobs:
 
       - name: Upload wheel
         uses: actions/upload-artifact@v4
-        if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version }}
+        if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version && matrix.numpy-version == 'latest' }}
         with:
           path: dist/*.tar.gz
           retention-days: 7
