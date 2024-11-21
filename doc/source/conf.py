@@ -77,3 +77,7 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+lincheck_ignore = [
+    "https://opensource.org/licenses/MIT",
+]
