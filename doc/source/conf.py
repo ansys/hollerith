@@ -1,6 +1,6 @@
 """Sphinx documentation configuration file."""
-from datetime import datetime
 import os
+from datetime import datetime
 
 from sphinx.builders.latex import LaTeXBuilder
 
@@ -33,7 +33,7 @@ html_short_title = html_title = "Hollerith"
 html_theme_options = {
     "logo": "pyansys",
     "switcher": {
-        "json_url": f"https://{cname}/versions.json",
+        "json_url": f"https://{cname}/versions.json",  # noqa: E231
         "version_match": switcher_version,
     },
     "check_switcher": False,
