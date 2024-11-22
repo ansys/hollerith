@@ -1,6 +1,6 @@
 """Sphinx documentation configuration file."""
-from datetime import datetime
 import os
+from datetime import datetime
 
 from sphinx.builders.latex import LaTeXBuilder
 
