@@ -177,7 +177,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   release:
-    name: "Release project to private PyPI, public PyPI and GitHub"
+    name: "Release project to PyPI and GitHub"
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     needs: [docs, compile-wheels]
     runs-on: ubuntu-latest
@@ -191,9 +191,12 @@ jobs:
           twine-token: ${{ secrets.PYPI_TOKEN }}
 
       - name: "Release to GitHub"
-        uses: ansys/actions/release-github@v8
+        uses: softprops/action-gh-release@v2
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
+          generate_release_notes: true
+          files: |
+            ./**/*.whl
+            ./**/*.tar.gz
 
   upload_dev_docs:
     name: Upload dev documentation
