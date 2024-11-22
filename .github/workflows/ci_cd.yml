@@ -144,7 +144,7 @@ jobs:
         if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version && matrix.numpy-version == 'latest' }}
         with:
           name: ${{ env.LIBRARY_NAME }}-artifacts
-          path: dist/
+          path: dist/*.tar.gz
           retention-days: 7
 
   docs:
