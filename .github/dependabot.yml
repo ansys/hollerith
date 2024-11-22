@@ -3,5 +3,21 @@ updates:
   - package-ecosystem: "pip"
     directory: "requirements/"
     schedule:
-      interval: "daily"
-    versioning-strategy: "lockfile-only"
+      interval: "monthly"
+    groups:
+      all-deps:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "build"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    groups:
+       actions:
+          patterns:
+            - "*"
