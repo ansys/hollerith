@@ -63,7 +63,7 @@ To install hollerith in developer mode, perform these steps:
 
 .. code::
 
-   git clone https://github.com/pyansys/hollerith
+   git clone https://github.com/ansys/hollerith
    cd hollerith
    pip install .
 

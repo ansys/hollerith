@@ -1,11 +1,12 @@
 """Sphinx documentation configuration file."""
+import os
 from datetime import datetime
 
 from sphinx.builders.latex import LaTeXBuilder
 
 LaTeXBuilder.supported_image_types = ["image/png", "image/pdf", "image/svg+xml"]
 
-from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
+from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from hollerith import __version__
 
 # Project information
@@ -15,6 +16,14 @@ author = "Ansys Inc."
 release = version = __version__
 
 # use the default pyansys logo
+cname = os.getenv("DOCUMENTATION_CNAME", default="hollerith.docs.pyansys.com")
+switcher_version = get_version_match(version)
+html_context = {
+    "github_user": "ansys",
+    "github_repo": "hollerith",
+    "github_version": "main",
+    "doc_path": "doc/source",
+}
 html_logo = pyansys_logo_black
 html_favicon = ansys_favicon
 html_theme = "ansys_sphinx_theme"
@@ -22,8 +31,20 @@ html_short_title = html_title = "Hollerith"
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/hollerith",
+    "logo": "pyansys",
+    "switcher": {
+        "json_url": f"https://{cname}/versions.json",  # noqa: E231
+        "version_match": switcher_version,
+    },
+    "check_switcher": False,
+    "github_url": "https://github.com/ansys/hollerith",
     "show_prev_next": False,
+    "show_breadcrumbs": True,
+    "collapse_navigation": True,
+    "use_edit_page_button": True,
+    "additional_breadcrumbs": [
+        ("PyAnsys", "https://docs.pyansys.com/"),
+    ],
 }
 
 # Sphinx extensions

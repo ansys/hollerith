@@ -1,12 +1,16 @@
 documentation:
-- doc/source/**/*
-- README.rst
+- changed-files:
+  - any-glob-to-any-file: 'docs/source/**/*'
+  - any-glob-to-any-file: 'README.rst'
 maintenance:
-- .github/**/*
-- .flake8
-- setup.py
-- pyproject.toml
-dependencies:
-- requirements/*
+- changed-files:
+  - any-glob-to-any-file: '.github/**/*'
+  - any-glob-to-any-file: '.flake8'
+  - any-glob-to-any-file: 'pyproject.toml'
+  - any-glob-to-any-file: 'setup.py'
 testing:
-- tests/*
+- changed-files:
+  - any-glob-to-any-file:  'tests/*'
+dependencies:
+- changed-files:
+  - any-glob-to-any-file:  'requirements/*'
