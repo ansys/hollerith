@@ -147,6 +147,30 @@ jobs:
           path: dist/*.tar.gz
           retention-days: 7
 
+  compile-wheels:
+    name: "Join all wheels into a single artifact"
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Find all wheels and source distributions
+        run: |
+          find . -name "*.whl" -exec cp {} dist/ \;
+          find . -name "*.tar.gz" -exec cp {} dist/ \;
+
+      - name: List contents of dist
+        run: ls dist
+
+      - name: Upload all wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.LIBRARY_NAME }}-artifacts
+          path: dist/*
+          retention-days: 7
+          overwrite: true
+
   docs:
     name: Build Documentation
     runs-on: ubuntu-latest
