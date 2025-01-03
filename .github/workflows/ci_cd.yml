@@ -50,7 +50,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ansys/actions/build-ci-wheels@feat/upgrade-cibuildwheel
+        uses: ansys/actions/build-ci-wheels@v8
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
