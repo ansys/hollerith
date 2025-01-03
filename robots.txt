@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow: /version/0.5
+
+Sitemap: https://hollerith.docs.pyansys.com/sitemap.xml
