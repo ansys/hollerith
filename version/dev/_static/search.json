@@ -1,0 +1,142 @@
+[
+    {
+        "objectID": "api_reference",
+        "href": "api_reference.html#api-reference",
+        "title": "API Reference",
+        "section": "API Reference",
+        "text": "API Reference"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#write",
+        "title": "write",
+        "section": "write",
+        "text": "Writes a string representing the int value to buffer within the given width, right justified.\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\nInteger to write. This could also be a numpy.int32\nThe number of characters to write\nWrites a string representing the float value to buffer within the given width, right justified.\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\nFloat to write.\nThe number of characters to write\nWrites a string representing the string value to buffer within the given width, left justified.\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\nString to write.\nThe number of characters to write\nWrites width space characters to buffer\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\nThe number of spaces to write\nWrite table to buffer with fixed width columns\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\nTable to write.\nThe number of rows to write. This might be larger than the length of table.\nIf so, append with empty lines with the right size.\nSpecification of the table. Must be the same length as the number of columns in table.\nHere, we convert the table to a numpy 2-d array with a type of object in order to call\nwrite_numpy_table.\nNumpy arrays of a narrower type are possible, such\nas arrays of ints or floats, and this conversion can be expensive. A future optimization\nwould be to expose Cython-level methods in _writer.\nwrite\nvalue\nbuffer\nwidth\npython:int\npython:int\nvalue\nbuffer\nwidth\npython:float\npython:int\nvalue\nbuffer\nwidth\npython:str\npython:int\nwidth\nbuffer\npython:int\npandas.DataFrame\npython:int\nList\nhollerith.Field\nwrite_numpy_table"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#hollerith._writer.write_int_to_buffer",
+        "title": "write > write > write_int_to_buffer",
+        "section": "write > write_int_to_buffer",
+        "text": "hollerith._writer.write_int_to_buffer(buffer, int value, int width)\n\nWrites a string representing the int value to buffer within the given width, right justified.\n\nParameters\n\nbuffer\n\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\n\nvalue\n\npython:int\n\nInteger to write. This could also be a numpy.int32\n\nwidth\n\npython:int\n\nThe number of characters to write\n\nExamples\n\n>>> import io\n>>> import hollerith as holler\n>>> buffer = io.StringIO()\n>>> holler.write_int(buffer, 145, 16)\n>>> print(buffer.getvalue())\n    '             145'\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#hollerith._writer.write_float_to_buffer",
+        "title": "write > write > write_float_to_buffer",
+        "section": "write > write_float_to_buffer",
+        "text": "hollerith._writer.write_float_to_buffer(buffer, double value, int width)\n\nWrites a string representing the float value to buffer within the given width, right justified.\n\nParameters\n\nbuffer\n\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\n\nvalue\n\npython:float\n\nFloat to write.\n\nwidth\n\npython:int\n\nThe number of characters to write\n\nExamples\n\n>>> import io\n>>> import hollerith as holler\n>>> buffer = io.StringIO()\n>>> holler.write_float(buffer, 1.0, 16)\n>>> print(buffer.getvalue())\n    '             1.0'\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#hollerith._writer.write_string_to_buffer",
+        "title": "write > write > write_string_to_buffer",
+        "section": "write > write_string_to_buffer",
+        "text": "hollerith._writer.write_string_to_buffer(buffer, unicode value, int width)\n\nWrites a string representing the string value to buffer within the given width, left justified.\n\nParameters\n\nbuffer\n\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\n\nvalue\n\npython:str\n\nString to write.\n\nwidth\n\npython:int\n\nThe number of characters to write\n\nExamples\n\n>>> import io\n>>> import hollerith as holler\n>>> buffer = io.StringIO()\n>>> holler.write_string(s, \"hello\", 16)\n>>> print(buffer.getvalue())\n    'hello           '\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#hollerith._writer.write_null_to_buffer",
+        "title": "write > write > write_null_to_buffer",
+        "section": "write > write_null_to_buffer",
+        "text": "hollerith._writer.write_null_to_buffer(buffer, int width)\n\nWrites width space characters to buffer\n\nParameters\n\nbuffer\n\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\n\nwidth\n\npython:int\n\nThe number of spaces to write\n\nExamples\n\n>>> import io\n>>> import hollerith as holler\n>>> buffer = io.StringIO()\n>>> holler.write_spaces(buffer, 16)\n>>> print(buffer.getvalue())\n    '                '\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "API/write",
+        "href": "API/write.html#hollerith.write_table",
+        "title": "write > write > write_table",
+        "section": "write > write_table",
+        "text": "hollerith.write_table(buffer, table: DataFrame, numrows: int, spec: List[Field])\n\nWrite table to buffer with fixed width columns\n\nParameters\n\nbuffer\n\nBuffer to write to - it could be a file or a StringIO object, for example. The only\nrequirement is that it must contain a write attribute that is callable with a single\nstring argument.\n\ntable\n\npandas.DataFrame\n\nTable to write.\n\nnumrows\n\npython:int\n\nThe number of rows to write. This might be larger than the length of table.\nIf so, append with empty lines with the right size.\n\nspec\n\nList[hollerith.Field]\n\nSpecification of the table. Must be the same length as the number of columns in table.\n\nNotes\n\nHere, we convert the table to a numpy 2-d array with a type of object in order to call\nwrite_numpy_table.\nNumpy arrays of a narrower type are possible, such\nas arrays of ints or floats, and this conversion can be expensive. A future optimization\nwould be to expose Cython-level methods in _writer.\n\nExamples\n\n>>> import io\n>>> import hollerith as holler\n>>> import pandas as pd\n>>> buffer = io.StringIO()\n>>> spec = [holler.Field(float, 20), holler.Field(float, 20)]\n>>> table = pd.DataFrame({\"a\": [1.0, 3.0, 5.0], \"b\": [2.0, 4.0, 6.0]})\n>>> result = holler.write_table(buffer, table, 3, spec)\n>>> print(buffer.getvalue())\n    '             1.0                 2.0\n                  3.0                 4.0\n                  5.0                 6.0'\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "API/field",
+        "href": "API/field.html#field",
+        "title": "Field",
+        "section": "Field",
+        "text": "A hollerith Field\nUsed when writing tables in write_table to format columns\nin a fixed width line.\nThe type of the field. This could be one of\nNone, str, int, or float.\nThe width of the field in characters.\nField\ntype"
+    },
+    {
+        "objectID": "API/field",
+        "href": "API/field.html#hollerith.Field",
+        "title": "Field > Field > Field",
+        "section": "Field > Field",
+        "text": "class hollerith.Field(type: None = None, width: int = None)\n\nA hollerith Field\n\nUsed when writing tables in write_table to format columns\nin a fixed width line.\n\nParameters\n\ntype\n\ntype\n\nThe type of the field. This could be one of\nNone, str, int, or float.\n\nwidth: int\n\nThe width of the field in characters.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#hollerith",
+        "title": "Hollerith",
+        "section": "Hollerith",
+        "text": "PyAnsys Python PyPI GH-CI MIT Black\nHollerith is a small python library that supports fixed-width formatting of some value types and\ntables. It is named after Herman Hollerith, the inventor of punch cards.\nHollerith"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#install-the-package",
+        "title": "Hollerith > Install the package",
+        "section": "Install the package",
+        "text": "Install the package"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#install-in-user-mode",
+        "title": "Hollerith > Install in user mode",
+        "section": "Install in user mode",
+        "text": "Before installing hollerith in user mode, make sure you have the latest version of\npip with:\nThen, install hollerith with:\nInstall in user mode"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#install-in-developer-mode",
+        "title": "Hollerith > Install in developer mode",
+        "section": "Install in developer mode",
+        "text": "Installing hollerith in developer mode allows\nyou to modify the source and enhance it.\nBefore contributing to the project, ensure that you are thoroughly familiar\nwith the PyAnsys Developer’s Guide.\nTo install hollerith in developer mode, perform these steps:\nInstall in developer mode"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#install-in-offline-mode",
+        "title": "Hollerith > Install in offline mode",
+        "section": "Install in offline mode",
+        "text": "If you lack an internet connection on your installation machine,\nyou should install hollerith by downloading the wheelhouse\narchive from the Releases Page for your\ncorresponding machine architecture.\nEach wheelhouse archive contains all the Python wheels necessary to install hollerith from scratch on Windows,\nLinux, and MacOS from Python 3.8 to 3.11.\nInstall in offline mode"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#documentation",
+        "title": "Hollerith > Documentation",
+        "section": "Documentation",
+        "text": "In addition to installation information, the hollerith\ndocumentation provides information on API reference.\nDocumentation"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#usage",
+        "title": "Hollerith > Usage",
+        "section": "Usage",
+        "text": "Example:\nUsage"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#license",
+        "title": "Hollerith > License",
+        "section": "License",
+        "text": "hollerith is licensed under the MIT license.\nThe full license can be found in the root directory of the repository,\nsee License.\nLicense\nhollerith"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#code-examples",
+        "title": "Hollerith > Code Examples",
+        "section": "Code Examples",
+        "text": "Here’s a quick preview for how Python code looks using hollerith.\nCode Examples\nhollerith"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#rendered-python-code",
+        "title": "Hollerith > Rendered Python Code",
+        "section": "Rendered Python Code",
+        "text": "Rendered Python Code"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#api-reference",
+        "title": "Hollerith > API Reference",
+        "section": "API Reference",
+        "text": "To see a full API reference, see ref_api_reference\nAPI Reference"
+    }
+]
