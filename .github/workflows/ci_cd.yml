@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Run code style checks"
-        uses: ansys/actions/code-style@v8
+        uses: ansys/actions/code-style@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -51,7 +51,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ansys/actions/build-ci-wheels@v8
+        uses: ansys/actions/build-ci-wheels@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -72,10 +72,13 @@ jobs:
           - python-version: '3.13'
             numpy-version: '1.26.4'
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout repository"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -153,7 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
 
       - name: Find all wheels and source distributions
         run: |
@@ -165,7 +168,7 @@ jobs:
         run: ls dist
 
       - name: Upload all wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v7.0.1
         with:
           name: ${{ env.LIBRARY_NAME }}-artifacts
           path: dist/*
@@ -177,31 +180,39 @@ jobs:
 
     steps:
       - name: Run Ansys documentation building action
-        uses: ansys/actions/doc-build@v8
+        uses: ansys/actions/doc-build@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v10.2.7
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   release:
-    name: "Release project to PyPI and GitHub"
+    name: Release project
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [docs, compile-wheels]
+    needs: [compile-wheels, docs]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to authenticate with PyPI via trusted publishing
+      contents: write  # Required to upload release artifacts
     steps:
-
-      - name: "Release to the public PyPI repository"
-        uses: ansys/actions/release-pypi-public@v8
+      - name: "Download the library artifacts from build-library step"
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
-          twine-username: "__token__"
-          twine-token: ${{ secrets.PYPI_TOKEN }}
+          name: ${{ env.PACKAGE_NAME }}-artifacts
+          path: ${{ env.PACKAGE_NAME }}-artifacts
+
+      - name: "Upload artifacts to PyPI using trusted publisher"
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          repository-url: "https://upload.pypi.org/legacy/"
+          print-hash: true
+          packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+          skip-existing: false
 
       - name: "Release to GitHub"
-        uses: softprops/action-gh-release@v2
+        uses: ansys/actions/release-github@571fb2b8c7d6ad8c8b18e50bd20fb00f125dcfb6 # v9.0.15
         with:
-          generate_release_notes: true
-          files: |
-            ./**/*.whl
-            ./**/*.tar.gz
+          library-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
 
   upload_dev_docs:
     name: Upload dev documentation

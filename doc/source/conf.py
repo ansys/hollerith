@@ -1,13 +1,13 @@
 """Sphinx documentation configuration file."""
-import os
+
 from datetime import datetime
-
-from sphinx.builders.latex import LaTeXBuilder
-
-LaTeXBuilder.supported_image_types = ["image/png", "image/pdf", "image/svg+xml"]
+import os
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from hollerith import __version__
+from sphinx.builders.latex import LaTeXBuilder
+
+LaTeXBuilder.supported_image_types = ["image/png", "image/pdf", "image/svg+xml"]
 
 # Project information
 project = "hollerith"

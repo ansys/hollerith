@@ -1,25 +1,26 @@
 """Installation file for hollerith"""
+
 import os
+from pathlib import Path
 
 import numpy
-from setuptools import Extension
-from setuptools import setup
+from setuptools import Extension, setup
 
 if os.name == "nt":  # windows
     extra_compile_args = ["/openmp", "/O2", "/w", "/GS"]
 elif os.name == "posix":  # linux/mac os
     extra_compile_args = ["-O3", "-w"]
 
-HERE = os.path.abspath(os.path.dirname(__file__))
+HERE = Path(__file__).parent.resolve()
 
 # Get version from version info
 __version__ = None
-version_file = os.path.join(HERE, "src", "_version.py")
-with open(version_file, mode="r") as fd:
+version_file = HERE / "src" / "_version.py"
+with Path.open(version_file, mode="r") as fd:
     # execute file from raw string
     exec(fd.read())
 
-with open(os.path.join(HERE, "README.rst"), encoding="utf-8") as f:
+with Path.open(HERE / "README.rst", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
@@ -48,7 +49,8 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
     ],
-    include_dirs=[os.path.join(numpy.get_include())],
+    # replace with os with pathlib
+    include_dirs=[Path(numpy.get_include())],
     ext_modules=[
         Extension(
             "hollerith._writer",
