@@ -28,6 +28,9 @@ test-skip = ["*_arm64", "*_universal2:arm64"]
 
 [tool.ruff]
 line-length = 100
+extend-exclude = [
+  "tests/test_table_writer.py",
+]
 fix = true
 format.indent-style = "space"
 format.quote-style = "double"
@@ -44,5 +47,6 @@ lint.select = [
 ]
 lint.isort.combine-as-imports = true
 lint.isort.force-sort-within-sections = true
-lint.isort.known-first-party = [ "ansys.tools.repo_sync" ]
+lint.isort.known-first-party = [ "hollerith" ]
 lint.pydocstyle.convention = "numpy"
+

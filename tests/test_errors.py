@@ -20,8 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import hollerith as holler
 import pytest
+
+import hollerith as holler
 
 
 def test_no_write():

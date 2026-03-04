@@ -12,11 +12,17 @@ repos:
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0
+  exclude: tests/test_table_writer.py
   hooks:
   - id: check-merge-conflict
+    exclude: tests/test_table_writer.py
   - id: debug-statements
+    exclude: tests/test_table_writer.py
   - id: check-yaml
+    exclude: tests/test_table_writer.py
   - id: trailing-whitespace
+    exclude: tests/test_table_writer.py
+
 
 - repo: https://github.com/asottile/blacken-docs
   rev: v1.12.1

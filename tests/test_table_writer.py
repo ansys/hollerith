@@ -1,25 +1,3 @@
-# Copyright (C) 2022 - 2026 ANSYS, Inc. and/or its affiliates.
-# SPDX-License-Identifier: MIT
-#
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import io
 import typing
 
@@ -46,7 +24,7 @@ def test_table_1():
 
 
 def test_table_2():
-    """Test table with empty columns"""
+    """test table with empty columns"""
     spec = [
         holler.Field(int, 8),
         holler.Field(float, 16),
@@ -94,17 +72,17 @@ def test_table_2():
     result = _write_table(value, spec, 12)
     assert (
         result
-        == """     100      -0.2969848       0.2969848             0.0
-     101      -0.2687006       0.2687006             0.0
-     104       -0.160727       0.3880294             0.0
-     105      -0.1454197       0.3510742             0.0
-     106      -0.2969848       0.2969848            0.25
-     107      -0.2687006       0.2687006            0.25
-     108      -0.1454197       0.3510742            0.25
-     109       -0.160727       0.3880294            0.25
-     110      -0.2969848       0.2969848             0.5
-     111      -0.2687006       0.2687006             0.5
-     112      -0.1454197       0.3510742             0.5
+        == """     100      -0.2969848       0.2969848             0.0                
+     101      -0.2687006       0.2687006             0.0                
+     104       -0.160727       0.3880294             0.0                
+     105      -0.1454197       0.3510742             0.0                
+     106      -0.2969848       0.2969848            0.25                
+     107      -0.2687006       0.2687006            0.25                
+     108      -0.1454197       0.3510742            0.25                
+     109       -0.160727       0.3880294            0.25                
+     110      -0.2969848       0.2969848             0.5                
+     111      -0.2687006       0.2687006             0.5                
+     112      -0.1454197       0.3510742             0.5                
      113       -0.160727       0.3880294             0.5                """
     )
 
@@ -131,8 +109,8 @@ def test_table_3():
     result = _write_table(value, spec, 3)
     assert (
         result
-        == """ 2000000
- 2000001   -2772.1652832     643.8095703     376.7990417
+        == """ 2000000                                                                
+ 2000001   -2772.1652832     643.8095703     376.7990417                
  2000002   -3093.8891602     685.0078125     811.2246704       1       5"""
     )
 

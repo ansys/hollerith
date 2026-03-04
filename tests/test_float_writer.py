@@ -22,8 +22,9 @@
 
 import io
 
-import hollerith as holler
 import pytest
+
+import hollerith as holler
 
 
 def _write_float(value: float, width: int) -> str:
