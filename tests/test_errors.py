@@ -43,5 +43,5 @@ def test_write_callable_incorrect_args():
         def write(self):
             pass
 
-    with pytest.raises(SystemError):
+    with pytest.raises(TypeError):
         holler.write_int(K(), 11, 11)
