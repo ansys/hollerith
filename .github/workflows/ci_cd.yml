@@ -42,6 +42,26 @@ jobs:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
+  actions-security:
+    name: Actions Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-actions-security@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
+
+  pr-name:
+    if: github.event_name == 'pull_request'
+    name: Check the name of the PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check commit name
+        uses: ansys/actions/check-pr-title@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     name: Build package on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
