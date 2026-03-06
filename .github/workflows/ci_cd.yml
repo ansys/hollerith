@@ -14,6 +14,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {} # Disable default permissions
+
 # Define the environment
 env:
   MAIN_PYTHON_VERSION: 3.11
@@ -24,6 +26,8 @@ jobs:
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
     steps:
       - name: "Run code style checks"
         uses: ansys/actions/code-style@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
@@ -34,6 +38,8 @@ jobs:
   check-vulnerabilities:
     name: Vulnerabilities
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
     steps:
       - uses: ansys/actions/check-vulnerabilities@3931ac9351b13ae11b1203c2ef6b51e5c75502ea # v10.2.5
         with:
@@ -45,6 +51,8 @@ jobs:
   actions-security:
     name: Actions Security
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
     steps:
       - uses: ansys/actions/check-actions-security@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
@@ -55,6 +63,8 @@ jobs:
   pr-name:
     if: github.event_name == 'pull_request'
     name: Check the name of the PR
+    permissions:
+      contents: read # Required to checkout code
     runs-on: ubuntu-latest
     steps:
       - name: Check commit name
@@ -65,6 +75,8 @@ jobs:
   build:
     name: Build package on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read # Required to checkout code
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -93,6 +105,8 @@ jobs:
   tests:
     name: Testing
     needs: [build, code-style]
+    permissions:
+      contents: read # Required to checkout code
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -114,7 +128,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Linux pip cache
-        uses: actions/cache@v4
+        # zizmor: ignore[cache-poisoning] - cache is for CI speedup, not security-sensitive
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         if: ${{ runner.os == 'Linux' }}
         with:
           path: ~/.cache/pip
@@ -123,7 +138,8 @@ jobs:
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Window pip cache
-        uses: actions/cache@v4
+        # zizmor: ignore[cache-poisoning] - cache is for CI speedup, not security-sensitive
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         if: ${{ runner.os == 'Windows' }}
         with:
           path: ~\AppData\Local\pip\Cache
@@ -174,7 +190,7 @@ jobs:
           twine check dist/*
 
       - name: Upload wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v7.0.1
         if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version && matrix.numpy-version == 'latest' }}
         with:
           name: ${{ env.LIBRARY_NAME }}-sdist
@@ -184,6 +200,8 @@ jobs:
   compile-wheels:
     name: "Join all wheels into a single artifact"
     needs: [tests]
+    permissions:
+      contents: read # Required to checkout code
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
@@ -208,6 +226,8 @@ jobs:
   doc-build:
     name: "Build documentation"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
     steps:
       - uses: ansys/actions/doc-build@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
@@ -251,7 +271,7 @@ jobs:
     needs: [doc-build]
     steps:
       - name: Deploy the latest documentation
-        uses: ansys/actions/doc-deploy-dev@v8
+        uses: ansys/actions/doc-deploy-dev@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -265,7 +285,7 @@ jobs:
     needs: [release]
     steps:
       - name: Deploy the stable documentation
-        uses: ansys/actions/doc-deploy-stable@v8
+        uses: ansys/actions/doc-deploy-stable@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}

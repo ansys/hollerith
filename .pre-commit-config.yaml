@@ -37,3 +37,8 @@ repos:
     exclude: ^tests/assets/.*$
     args:
     - --start_year=2022
+
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: v1.22.0
+  hooks:
+    - id: zizmor
