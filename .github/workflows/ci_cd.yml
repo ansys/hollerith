@@ -167,6 +167,7 @@ jobs:
 
       - name: Install Numpy old version
         if: ${{ matrix.numpy-version != 'latest' }}
+        # zizmor: ignore[template-injection] - matrix values are controlled and not user input
         run: pip install numpy==${{ matrix.numpy-version }}
 
       - name: Install Numpy latest version
