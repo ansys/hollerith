@@ -147,8 +147,18 @@ def test_table_4():
         holler.Field(int, width=8),
     ]
 
+    # Use nullable Int64 for integer columns to avoid a crash in numpy.argsort
+    # triggered by pandas block consolidation on Python 3.14 Windows when mixing
+    # numpy int64 and float64 column blocks in the same DataFrame.
     value = pd.DataFrame(
-        {"nid": [69000001], "x": [0.0], "y": [1.0], "z": [1.0], "tc": [1], "rc": [1]}
+        {
+            "nid": pd.array([69000001], dtype="Int64"),
+            "x": [0.0],
+            "y": [1.0],
+            "z": [1.0],
+            "tc": pd.array([1], dtype="Int64"),
+            "rc": pd.array([1], dtype="Int64"),
+        }
     )
     result = _write_table(value, spec, 1)
     assert result == "69000001             0.0             1.0             1.0       1       1"
