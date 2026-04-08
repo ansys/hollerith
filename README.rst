@@ -55,10 +55,10 @@ Installing hollerith in developer mode allows
 you to modify the source and enhance it.
 
 .. note::
-   
+
     Before contributing to the project, ensure that you are thoroughly familiar
     with the `PyAnsys Developer's Guide <https://dev.docs.pyansys.com/>`_.
-    
+
 To install hollerith in developer mode, perform these steps:
 
 .. code::
@@ -80,7 +80,7 @@ Linux, and MacOS from Python 3.8 to 3.11.
 
 Documentation
 -------------
-In addition to installation information, the `hollerith <https://hollerith.docs.pyansys.com/>`_ 
+In addition to installation information, the `hollerith <https://hollerith.docs.pyansys.com/>`_
 documentation provides information on API reference.
 
 Usage
@@ -102,5 +102,5 @@ Example:
 License
 -------
 ``hollerith`` is licensed under the MIT license.
-The full license can be found in the root directory of the repository, 
+The full license can be found in the root directory of the repository,
 see `License <https://github.com/ansys/hollerith/blob/main/LICENSE>`_.

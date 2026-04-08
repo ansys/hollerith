@@ -14,6 +14,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {} # Disable default permissions
+
 # Define the environment
 env:
   MAIN_PYTHON_VERSION: 3.11
@@ -24,16 +26,57 @@ jobs:
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
     steps:
       - name: "Run code style checks"
-        uses: ansys/actions/code-style@v8
+        uses: ansys/actions/code-style@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
 
+  check-vulnerabilities:
+    name: Vulnerabilities
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@3931ac9351b13ae11b1203c2ef6b51e5c75502ea # v10.2.5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-package-name: ${{ env.LIBRARY_NAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+
+  actions-security:
+    name: Actions Security
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout code
+    steps:
+      - uses: ansys/actions/check-actions-security@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
+
+  pr-name:
+    if: github.event_name == 'pull_request'
+    name: Check the name of the PR
+    permissions:
+      contents: read # Required to checkout code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check commit name
+        uses: ansys/actions/check-pr-title@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     name: Build package on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read # Required to checkout code
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -43,6 +86,7 @@ jobs:
           - {python-version: '3.11', cibw-build: 'cp311-*'}
           - {python-version: '3.12', cibw-build: 'cp312-*'}
           - {python-version: '3.13', cibw-build: 'cp313-*'}
+          - {python-version: '3.14', cibw-build: 'cp314-*', cibw_archs: 'x64'}
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
@@ -50,7 +94,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ansys/actions/build-ci-wheels@v8
+        uses: ansys/actions/build-ci-wheels@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -61,40 +105,27 @@ jobs:
   tests:
     name: Testing
     needs: [build, code-style]
+    permissions:
+      contents: read # Required to checkout code
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
         os: [ubuntu-latest, windows-latest]
         numpy-version: ['1.26.4', 'latest']
         exclude:
           - python-version: '3.13'
             numpy-version: '1.26.4'
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout repository"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Linux pip cache
-        uses: actions/cache@v4
-        if: ${{ runner.os == 'Linux' }}
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}-numpy-${{ matrix.numpy-version }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Window pip cache
-        uses: actions/cache@v4
-        if: ${{ runner.os == 'Windows' }}
-        with:
-          path: ~\AppData\Local\pip\Cache
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}-numpy-${{ matrix.numpy-version }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Create Linux wheel
         run: |
@@ -116,6 +147,7 @@ jobs:
 
       - name: Install Numpy old version
         if: ${{ matrix.numpy-version != 'latest' }}
+        # zizmor: ignore[template-injection] - matrix values are controlled and not user input
         run: pip install numpy==${{ matrix.numpy-version }}
 
       - name: Install Numpy latest version
@@ -139,7 +171,7 @@ jobs:
           twine check dist/*
 
       - name: Upload wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v7.0.1
         if: ${{ runner.os == 'Linux' && env.MAIN_PYTHON_VERSION == matrix.python-version && matrix.numpy-version == 'latest' }}
         with:
           name: ${{ env.LIBRARY_NAME }}-sdist
@@ -149,10 +181,12 @@ jobs:
   compile-wheels:
     name: "Join all wheels into a single artifact"
     needs: [tests]
+    permissions:
+      contents: read # Required to checkout code
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
 
       - name: Find all wheels and source distributions
         run: |
@@ -164,52 +198,61 @@ jobs:
         run: ls dist
 
       - name: Upload all wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v7.0.1
         with:
           name: ${{ env.LIBRARY_NAME }}-artifacts
           path: dist/*
           retention-days: 7
 
-  docs:
-    name: Build Documentation
+  doc-build:
+    name: "Build documentation"
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read # Required to checkout code
     steps:
-      - name: Run Ansys documentation building action
-        uses: ansys/actions/doc-build@v8
+      - uses: ansys/actions/doc-build@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-  release:
-    name: "Release project to PyPI and GitHub"
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [docs, compile-wheels]
-    runs-on: ubuntu-latest
-    steps:
 
-      - name: "Release to the public PyPI repository"
-        uses: ansys/actions/release-pypi-public@v8
+  release:
+    name: Release project
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    needs: [compile-wheels, doc-build]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to authenticate with PyPI via trusted publishing
+      contents: write  # Required to upload release artifacts
+    steps:
+      - name: "Download the library artifacts from build-library step"
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
-          twine-username: "__token__"
-          twine-token: ${{ secrets.PYPI_TOKEN }}
+          name: ${{ env.PACKAGE_NAME }}-artifacts
+          path: ${{ env.PACKAGE_NAME }}-artifacts
+
+      - name: "Upload artifacts to PyPI using trusted publisher"
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          repository-url: "https://upload.pypi.org/legacy/"
+          print-hash: true
+          packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+          skip-existing: false
 
       - name: "Release to GitHub"
-        uses: softprops/action-gh-release@v2
+        uses: ansys/actions/release-github@571fb2b8c7d6ad8c8b18e50bd20fb00f125dcfb6 # v9.0.15
         with:
-          generate_release_notes: true
-          files: |
-            ./**/*.whl
-            ./**/*.tar.gz
+          library-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
 
   upload_dev_docs:
     name: Upload dev documentation
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: [docs]
+    needs: [doc-build]
     steps:
       - name: Deploy the latest documentation
-        uses: ansys/actions/doc-deploy-dev@v8
+        uses: ansys/actions/doc-deploy-dev@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -223,7 +266,7 @@ jobs:
     needs: [release]
     steps:
       - name: Deploy the stable documentation
-        uses: ansys/actions/doc-deploy-stable@v8
+        uses: ansys/actions/doc-deploy-stable@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
