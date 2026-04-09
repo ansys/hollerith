@@ -18,7 +18,7 @@ permissions: {} # Disable default permissions
 
 # Define the environment
 env:
-  MAIN_PYTHON_VERSION: 3.11
+  MAIN_PYTHON_VERSION: 3.12
   LIBRARY_NAME: hollerith
   DOCUMENTATION_CNAME: hollerith.docs.pyansys.com
 
