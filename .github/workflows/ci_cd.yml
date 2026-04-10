@@ -239,10 +239,12 @@ jobs:
           skip-existing: false
 
       - name: "Release to GitHub"
-        uses: ansys/actions/release-github@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v9.0.15
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
-          library-name: ${{ env.LIBRARY_NAME }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
+          files: |
+            ./**/*.whl
+            ./**/*.tar.gz
 
 
   upload_dev_docs:
