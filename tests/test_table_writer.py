@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import io
 import typing
 
@@ -125,8 +147,18 @@ def test_table_4():
         holler.Field(int, width=8),
     ]
 
+    # Use nullable Int64 for integer columns to avoid a crash in numpy.argsort
+    # triggered by pandas block consolidation on Python 3.14 Windows when mixing
+    # numpy int64 and float64 column blocks in the same DataFrame.
     value = pd.DataFrame(
-        {"nid": [69000001], "x": [0.0], "y": [1.0], "z": [1.0], "tc": [1], "rc": [1]}
+        {
+            "nid": pd.array([69000001], dtype="Int64"),
+            "x": [0.0],
+            "y": [1.0],
+            "z": [1.0],
+            "tc": pd.array([1], dtype="Int64"),
+            "rc": pd.array([1], dtype="Int64"),
+        }
     )
     result = _write_table(value, spec, 1)
     assert result == "69000001             0.0             1.0             1.0       1       1"

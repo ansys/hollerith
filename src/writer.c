@@ -271,6 +271,12 @@ static int validate_inputs(PyObject* write, PyObject* check_null, int width) {
   if (write == NULL || check_null == NULL) {
     return -1;
   }
+
+  if (!PyCallable_Check(write)) {
+    PyErr_SetString(PyExc_SystemError, "hollerith: write attribute is not callable");
+    return -3;
+  }
+
   return 1;
 }
 

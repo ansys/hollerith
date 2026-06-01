@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 # cython: language_level=3
 # cython: infer_types=True
 # cython: boundscheck=False
@@ -8,6 +30,7 @@
 
 import cython
 from libc.stdlib cimport malloc, free
+from cpython.exc cimport PyErr_Occurred
 
 import numpy as np  # Python-level symbols of numpy
 
@@ -26,11 +49,26 @@ cdef extern from 'writer.h':
     int write_string_value(object write, object check_null, object value, int width)
     int write_null_value(object write, int width)
 
-cdef throw_write_error(int code):
+cdef int throw_write_error(int code) except -1:
+    """Translate a C-level error code into a Python exception.
+
+    Returns 0 on success (code == 1) or raises.  Declaring the return type as
+    ``int`` with ``except -1`` means Cython will check ``PyErr_Occurred()``
+    whenever this function returns -1, so a *pre-existing* C exception (e.g.
+    the ``SystemError`` set by ``validate_inputs`` when ``write`` is not
+    callable) is propagated correctly instead of being replaced by the generic
+    hollerith ``Exception``.  This became critical in Python 3.14, which no
+    longer raises ``SystemError`` on its own when Python code is called while
+    an exception is already pending.
+    """
     if code == 1:
-        return
-    # TODO - raise the error in C?
-    #      - or return an error code with a more useful message?
+        return 0
+    # If the C code already set a Python exception (e.g. SystemError for a
+    # non-callable write attribute), signal Cython to propagate it by
+    # returning the -1 sentinel.  Cython will then call PyErr_Occurred()
+    # and propagate the existing exception without us constructing a new one.
+    if PyErr_Occurred():
+        return -1
     raise Exception(f"error in hollerith: {code}")
 
 cpdef write_float_to_buffer(buffer, double value, int width):
