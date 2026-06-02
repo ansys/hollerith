@@ -18,7 +18,7 @@ permissions: {} # Disable default permissions
 
 # Define the environment
 env:
-  MAIN_PYTHON_VERSION: 3.12
+  MAIN_PYTHON_VERSION: 3.14
   LIBRARY_NAME: hollerith
   DOCUMENTATION_CNAME: hollerith.docs.pyansys.com
 
@@ -73,7 +73,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    name: Build package on ${{ matrix.os }}
+    name: Build package on ${{ matrix.os }} with Python ${{ matrix.cfg.python-version }}
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read # Required to checkout code
@@ -115,6 +115,8 @@ jobs:
         numpy-version: ['1.26.4', 'latest']
         exclude:
           - python-version: '3.13'
+            numpy-version: '1.26.4'
+          - python-version: '3.14'
             numpy-version: '1.26.4'
     steps:
       - name: "Checkout repository"
@@ -239,7 +241,7 @@ jobs:
           skip-existing: false
 
       - name: "Release to GitHub"
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0 # zizmor: ignore[superfluous-actions]
         with:
           generate_release_notes: true
           files: |
