@@ -1,3 +1,13 @@
+# Contribute
+
+Overall guidance on contributing to a PyAnsys library appears in the
+[Contributing] topic in the *PyAnsys developer's guide*. Ensure that you
+are thoroughly familiar with this guide before attempting to contribute to
+{project-name}.
+
+[Contributing]: https://dev.docs.pyansys.com/how-to/contributing.html
+
+<!-- Begin content specific to your library here. -->
 # Contributing
 
 Repositories should have a contributing section, but we don't need to have all the contributing information here.  Have them reference the developer guide.
