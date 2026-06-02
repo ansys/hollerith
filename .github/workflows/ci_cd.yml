@@ -18,7 +18,7 @@ permissions: {} # Disable default permissions
 
 # Define the environment
 env:
-  MAIN_PYTHON_VERSION: 3.12
+  MAIN_PYTHON_VERSION: 3.14
   LIBRARY_NAME: hollerith
   DOCUMENTATION_CNAME: hollerith.docs.pyansys.com
 
@@ -73,7 +73,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    name: Build package on ${{ matrix.os }}
+    name: Build package on ${{ matrix.os }} with Python ${{ matrix.cfg.python-version }}
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read # Required to checkout code
