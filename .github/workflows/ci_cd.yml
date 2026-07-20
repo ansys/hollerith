@@ -98,7 +98,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ./.github/workflows/ci-build-wheel/action.yml
+        uses: ./.github/ci-build-wheel
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
