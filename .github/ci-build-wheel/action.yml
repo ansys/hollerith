@@ -86,8 +86,8 @@ runs:
       uses: pypa/cibuildwheel@294735312765b09d24a2fbec22660ce817587d55 # v4.1.0
       env:
         CIBW_BUILD: ${{ inputs.cibw-build }}
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2018
-        CIBW_MANYLINUX_I686_IMAGE: manylinux2018
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+        CIBW_MANYLINUX_I686_IMAGE: manylinux2014
         CIBW_ARCHS: ${{ inputs.cibw-archs }}
 
     - name: "Build wheels for PyPy"
