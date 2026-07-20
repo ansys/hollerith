@@ -94,7 +94,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ./.github/ci-build-wheel
+        uses: ./.github/workflows/ci-build-wheel/action.yml
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
