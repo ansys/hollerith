@@ -30,7 +30,7 @@ jobs:
       contents: read # Required to checkout code
     steps:
       - name: "Run code style checks"
-        uses: ansys/actions/code-style@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+        uses: ansys/actions/code-style@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -41,7 +41,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/check-vulnerabilities@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - uses: ansys/actions/check-vulnerabilities@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           python-package-name: ${{ env.LIBRARY_NAME }}
@@ -54,7 +54,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/check-actions-security@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - uses: ansys/actions/check-actions-security@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check commit name
-        uses: ansys/actions/check-pr-title@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+        uses: ansys/actions/check-pr-title@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -94,7 +94,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ansys/actions/build-ci-wheels@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+        uses: ansys/actions/build-ci-wheels@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -120,12 +120,12 @@ jobs:
             numpy-version: '1.26.4'
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -212,7 +212,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/doc-build@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - uses: ansys/actions/doc-build@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -233,7 +233,7 @@ jobs:
           path: ${{ env.LIBRARY_NAME }}-artifacts
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # v1.14.1
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
@@ -241,7 +241,7 @@ jobs:
           skip-existing: false
 
       - name: "Release to GitHub"
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0 # zizmor: ignore[superfluous-actions]
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.0 # zizmor: ignore[superfluous-actions]
         with:
           generate_release_notes: true
           files: |
@@ -256,7 +256,7 @@ jobs:
     needs: [doc-build]
     steps:
       - name: Deploy the latest documentation
-        uses: ansys/actions/doc-deploy-dev@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+        uses: ansys/actions/doc-deploy-dev@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -270,7 +270,7 @@ jobs:
     needs: [release]
     steps:
       - name: Deploy the stable documentation
-        uses: ansys/actions/doc-deploy-stable@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+        uses: ansys/actions/doc-deploy-stable@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
