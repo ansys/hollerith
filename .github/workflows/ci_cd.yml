@@ -30,7 +30,7 @@ jobs:
       contents: read # Required to checkout code
     steps:
       - name: "Run code style checks"
-        uses: ansys/actions/code-style@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/code-style@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -41,7 +41,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/check-vulnerabilities@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/check-vulnerabilities@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           python-package-name: ${{ env.LIBRARY_NAME }}
@@ -54,7 +54,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/check-actions-security@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/check-actions-security@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check commit name
-        uses: ansys/actions/check-pr-title@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/check-pr-title@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -129,7 +129,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 #v7.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -216,7 +216,7 @@ jobs:
     permissions:
       contents: read # Required to checkout code
     steps:
-      - uses: ansys/actions/doc-build@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/doc-build@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -237,7 +237,7 @@ jobs:
           path: ${{ env.LIBRARY_NAME }}-artifacts
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # v1.14.1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
@@ -245,12 +245,13 @@ jobs:
           skip-existing: false
 
       - name: "Release to GitHub"
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2 # zizmor: ignore[superfluous-actions]
-        with:
-          generate_release_notes: true
-          files: |
-            ./**/*.whl
-            ./**/*.tar.gz
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          gh release create "$REF_NAME" \
+            --generate-notes \
+            $(find . -name "*.whl" -o -name "*.tar.gz" | tr '\n' ' ')
 
 
   upload_dev_docs:
@@ -260,7 +261,7 @@ jobs:
     needs: [doc-build]
     steps:
       - name: Deploy the latest documentation
-        uses: ansys/actions/doc-deploy-dev@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/doc-deploy-dev@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -274,7 +275,7 @@ jobs:
     needs: [release]
     steps:
       - name: Deploy the stable documentation
-        uses: ansys/actions/doc-deploy-stable@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/doc-deploy-stable@e2075e950bdec40b816670160e98c4c184c7b281 # v11.0.0
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
