@@ -96,6 +96,12 @@ static void format_decimal_double(char* double_buffer, double d, int width) {
 }
 
 static void format_whole_double(char* double_buffer, double d, int width) {
+  // large number won't fit
+  if (fabs(d) >= 1e20) {  
+    format_decimal_double(double_buffer, d, width);
+    return;
+  }
+  
   // first check to see if %.1f fits in width
   static char big_buffer[DOUBLE_BUFFER_MAX_SIZE];
   memset(big_buffer, 0, DOUBLE_BUFFER_MAX_SIZE);
