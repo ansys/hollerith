@@ -154,7 +154,7 @@ jobs:
       - name: Install Numpy old version
         if: ${{ matrix.numpy-version != 'latest' }}
         # zizmor: ignore[template-injection] - matrix values are controlled and not user input
-        run: pip install numpy==${{ matrix.numpy-version }}
+        run: pip install numpy==${{ matrix.numpy-version }} "pandas<3"  # pandas>=3 requires numpy>=2
 
       - name: Install Numpy latest version
         if: ${{ matrix.numpy-version == 'latest' }}
