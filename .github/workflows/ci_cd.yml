@@ -98,7 +98,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Create wheel for CPython ${{ matrix.cfg.python-version }}
-        uses: ./.github/ci-build-wheel
+        uses: ./.github/ci-build-wheel  # zizmor: ignore[self-repository] -- `$/` syntax unsupported by pinned pre-commit zizmor
         with:
           python-version: ${{ matrix.cfg.python-version }}
           cibw-build: ${{ matrix.cfg.cibw-build }}
@@ -154,7 +154,7 @@ jobs:
       - name: Install Numpy old version
         if: ${{ matrix.numpy-version != 'latest' }}
         # zizmor: ignore[template-injection] - matrix values are controlled and not user input
-        run: pip install numpy==${{ matrix.numpy-version }}
+        run: pip install numpy==${{ matrix.numpy-version }} "pandas<3"  # pandas>=3 requires numpy>=2
 
       - name: Install Numpy latest version
         if: ${{ matrix.numpy-version == 'latest' }}
@@ -237,7 +237,7 @@ jobs:
           path: ${{ env.LIBRARY_NAME }}-artifacts
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
